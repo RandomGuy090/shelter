@@ -23,13 +23,3 @@ class Shelter(object):
 		
 		return txt	
 
-
-	def changeColor(self, txt, code:"[escCde, style, txtCol, bgcol]")-> "colored string":
-		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"
-		tail = "\033[0;0m"
-		return f"{header}{txt}{tail}"
-
-	def list(self, data):
-		for elem in data:	
-			elem = self.checkType(elem, data)
-			print(elem)
