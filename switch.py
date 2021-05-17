@@ -10,10 +10,14 @@ class Switch():
 		try:
 			arg = read[1:]
 			comm = read[0]
+			firstLayer = list()
+			for elem in arg: firstLayer.append(elem)
 		except:
+			firstLayer = None
 			arg = None
 			comm = read[0]
-		
+		# print(f"{comm} {arg}")
+		# print(f"{self.data}")
 		if comm in var.LS_KWORDS:			#eg ls
 			return getattr(self, "case_LIST")()
 		
@@ -24,15 +28,20 @@ class Switch():
 			return getattr(self, "case_EXIT")()
 
 		elif comm in var.CD_KWORDS:			#eg cd sth
-			if arg != None:				#if argumest exists
+			if len(arg) > 0:				#if argumest exists
 				if f"{comm} {arg[0]}" in var.CD_UP_KWORDS:	#eg cd ..
 					return getattr(self, "case_CD_UP")()
 
-				elif arg[0] in self.data:
-					print("goto")
+				elif arg[0] in self.data: 	#eg cd path/to/file
 					return getattr(self, "case_CD_to")(arg)
-				elif f"{comm} {arg}" in var.CD_UP_KWORDS:	#eg cd path/to/file
+
+				elif arg[0].rsplit("/") in firstLayer: 	#eg cd path/to/file
+					return getattr(self, "case_CD_to")(arg)
+
+				elif f"{comm} {arg}" in var.CD_UP_KWORDS:	
+					
 					return getattr(self, "case_CD_UP")()
+				
 				else:					#just cd to root
 					return getattr(self, "case_CD")()
 
@@ -44,7 +53,9 @@ class Switch():
 				print(f"password {passwd}")		#tmp
 				return None
 			else:
-				return getattr(self, "case_go_to")(comm)	
+				# return getattr(self, "case_go_to")(comm)	
+				return getattr(self, "case_CD_to")(comm)	
+				
 
 		elif comm == "":
 			return getattr(self, "case_CD")()
@@ -63,37 +74,55 @@ class Switch():
 		sys.exit(0)
 
 	def case_CD_UP(self):
-		newPath = var.PATH.rsplit("/")[:-2]
-		tmp = str(newPath).replace(", ", "][")
-		if tmp != "[]":
+		print("case_CD_UP")
+
+		newPath = var.PATH.rsplit("']")
+		newPath = newPath[:-2]
+		tmp = ""
+		for elem in newPath: 
+			if not elem.startswith("['"): elem = f"['{elem}"
+			if not elem.endswith("']"): elem = f"{elem}']"
+			tmp+=elem
+				
+
+		if not tmp.endswith("']"): tmp += "']" 
+
+		if tmp != "']":
 			var.PATHDIR = eval(f'self.data{tmp}')
 		else:
-			var.PATHDIR = eval(f'self.data')
+			self.case_CD()
+			return
 
 		var.PATH = ""
-		for elem in newPath: var.PATH+=elem+"/"
+		for elem in tmp: var.PATH+=elem
+		
+		if not var.PATH.endswith("']") and len(var.PATH)>1: newPath += "']" 
+		
 		self.printOut()
 
 	def case_CD_to(self, arg):
-		tmp = ""
-		for elem in arg:
-			tmp += f"['{elem}']"
-		print(tmp)
-		var.PATH = tmp.replace("']", "/").replace("['","/")
-		if var.PATH.startswith("/"): var.PATH = var.PATH[1:] 
-		print(var.PATH)
-		var.PATHDIR = eval(f'self.data{tmp}')
-	
+		if isinstance(arg, list): 	#if comes from cd {path}
+			while[-1] == "":
+				arg = arg[:-1]
+			var.PATH = f"{var.PATH}{arg}"
+		
+		elif isinstance(arg, str): #if comes from only {path}
+			var.PATH = f"{var.PATH}['{arg}']"
 
+		var.PATHDIR = eval(f"self.data{var.PATH}")
+
+		self.printOut()
+
+	def case_go_to(self, loc):
+		var.PATHDIR = var.PATHDIR[loc]	#go back
+		var.PATH += f"{loc}/"
+		self.printOut()
 
 	def case_CD(self):
 		var.PATHDIR = self.data
 		var.PATH = ""
 		self.printOut()
 	
-	def case_go_to(self, loc):
-		var.PATHDIR = var.PATHDIR[loc]	#go back
-		var.PATH += f"{loc}/"
 
 	def case_NONE(self, comm):
 		print(f"shelter '{comm}' not found")	#if not found
