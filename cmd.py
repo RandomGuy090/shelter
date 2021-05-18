@@ -10,8 +10,11 @@ class Cmd(Shelter, Switch):
 
 	def printOut(self):
 		data = var.PATHDIR
+		var.COMMANDS = []
 		for elem in data:	
+			var.COMMANDS.append(elem)
 			elem = self.checkType(elem, data)
+			
 			print(elem)
 
 	def changeColor(self, txt, code:"[escCde, style, txtCol, bgcol]")-> "colored string":

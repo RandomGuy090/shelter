@@ -1,8 +1,9 @@
 #! /bin/python
-import os, sys, readline
+import os, sys, readline, re
 
 from shelter import Shelter
 from cmd import  Cmd
+from autocomp import Completer
 
 import variables as var
 

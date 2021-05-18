@@ -8,3 +8,5 @@ NEW_FILES = ["add"]
 
 PATH = ""
 PATHDIR = None
+
+COMMANDS = []
