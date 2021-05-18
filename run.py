@@ -21,6 +21,3 @@ if __name__ == "__main__":
 		else:
 			read = input(f"shelter>")
 		cmd.switch(read)
-
-
-

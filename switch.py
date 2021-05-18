@@ -16,8 +16,7 @@ class Switch():
 			firstLayer = None
 			arg = None
 			comm = read[0]
-		# print(f"{comm} {arg}")
-		# print(f"{self.data}")
+
 		if comm in var.LS_KWORDS:			#eg ls
 			return getattr(self, "case_LIST")()
 		
@@ -125,7 +124,7 @@ class Switch():
 	
 
 	def case_NONE(self, comm):
-		print(f"shelter '{comm}' not found")	#if not found
+		self.notFound(comm)	#if not found
 
 
 class Cmd(Shelter, Switch):
@@ -142,6 +141,11 @@ class Cmd(Shelter, Switch):
 		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"
 		tail = "\033[0;0m"
 		return f"{header}{txt}{tail}"
+	
+	def notFound(self, command):
+		header = f"\x1b[0;31m"
+		tail = "\033[0;0m"
+		print(f"{header} command : '{command}' not found{tail}")
 
 
 
