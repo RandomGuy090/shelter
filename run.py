@@ -16,8 +16,10 @@ if __name__ == "__main__":
 	cmd.printOut()
 
 	while True:
+		path = cmd.convToPath(var.PATH)
+		prompt = cmd.promptColor("shelter>")
 		if len(var.PATH) >1:
-			read = input(f"shelter>{var.PATH}>")
+			read = input(f"{prompt}{path}>")
 		else:
-			read = input(f"shelter>")
+			read = input(f"{prompt}")
 		cmd.switch(read)

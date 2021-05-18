@@ -143,9 +143,25 @@ class Cmd(Shelter, Switch):
 		return f"{header}{txt}{tail}"
 	
 	def notFound(self, command):
-		header = f"\x1b[0;31m"
+		header = f"\x1b[1;31m"
 		tail = "\033[0;0m"
 		print(f"{header} command : '{command}' not found{tail}")
+
+	def convToPath(self, path):
+		path = path[2:-2]
+		path = path.replace("']['", "/")
+
+		font = [ "1", "34", "49"]
+		path = self.changeColor(path, ["\x1b[",font[0] ,font[1],font[2]])
+		return path
+
+	def promptColor(self, str):
+		header = f"\x1b[1;32m"
+		tail = "\033[0;0m"
+		return f"{header}{str}{tail}"
+
+		
+		
 
 
 

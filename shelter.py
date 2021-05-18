@@ -13,8 +13,8 @@ class Shelter(object):
 			return tmp
 
 	def checkType(self, txt, elem)->"dict":
-		font1 = [ "1", "37", "42"]
-		font2 = [ "1", "30", "41"]
+		font1 = [ "1", "34", "49"]
+		font2 = [ "1", "33", "49"]
 		if isinstance(elem[txt], dict):
 			txt = self.changeColor(txt, ["\x1b[",font1[0] ,font1[1],font1[2]])
 
