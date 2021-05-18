@@ -1,6 +1,6 @@
 import variables as var
 import sys
-
+from re import sub
 
 class Switch():
 
@@ -54,14 +54,16 @@ class Switch():
 				# return getattr(self, "case_go_to")(comm)	
 				return getattr(self, "case_CD_to")(comm)	
 				
-
 		elif comm == "":
 			return getattr(self, "case_CD")()
 		elif comm in "reset":
 			return getattr(self, "case_RESET")()
 
 		elif comm in var.NEW_SHELTER:		#eg add XX
-			return getattr(self, "case_CREATE")(arg)
+			return getattr(self, "case_CREATE_DIR")(arg)
+
+		elif comm in var.NEW_FILES:		#eg add XX
+			return getattr(self, "case_CREATE_FILE")(arg)
 
 		#--- adding new cases here
 		else:
@@ -134,13 +136,35 @@ class Switch():
 	def case_RESET(self):
 		print(chr(27) + "[2J")
 
-	def case_CREATE(self, arg, command="create"):
+	def case_CREATE_DIR(self, arg, command="create"):
 		if len(arg) == 0 :
-			return self.notFound("create", "no argument") 
+			return self.notFound(command, "no argument") 
 		for elem in arg:
 			if " " in elem: continue 
 			elif len(elem) == 0: continue 
 			var.PATHDIR[elem] = dict()
+		self.printOut()
+
+
+	def case_CREATE_FILE(self, arg, command="add"):
+		if len(arg) == 0 :
+			return self.notFound(command, "no argument") 
+
+		out = []
+		for elem in arg:
+			if len(elem) > 0 and  not " " in elem:
+				out.append(elem)
+		arg = out		
+
+		for i in range(0, (len(arg)-1), 2 ):
+			name = arg[i]
+			content = arg[i+1]
+			if " " in name or " " in content: continue 
+			elif len(name) == 0 or len(content) == 0: continue 
+			
+			print(f" name  {name}   content  {content}")
+			var.PATHDIR[name] = content
+		
 		self.printOut()
 	
 
