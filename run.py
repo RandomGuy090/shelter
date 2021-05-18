@@ -1,8 +1,8 @@
 #! /bin/python
-import os, sys
+import os, sys, readline
 
 from shelter import Shelter
-from switch import  Cmd, Switch
+from cmd import  Cmd
 
 import variables as var
 

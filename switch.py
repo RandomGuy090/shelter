@@ -1,6 +1,5 @@
 import variables as var
 import sys
-from shelter import Shelter
 
 
 class Switch():
@@ -49,7 +48,7 @@ class Switch():
 		elif comm in var.PATHDIR:		#eg name of shelter
 			if isinstance(var.PATHDIR[comm], str):	#if it is string
 				passwd = var.PATHDIR[comm]	#this is tem, default paste to clipboard
-				print(f"password {passwd}")		#tmp
+				self.clipboard(passwd)		#tmp
 				return None
 			else:
 				# return getattr(self, "case_go_to")(comm)	
@@ -58,6 +57,13 @@ class Switch():
 
 		elif comm == "":
 			return getattr(self, "case_CD")()
+		elif comm in "reset":
+			return getattr(self, "case_RESET")()
+
+		elif comm in var.NEW_SHELTER:		#eg add XX
+			return getattr(self, "case_CREATE")(arg)
+
+		#--- adding new cases here
 		else:
 			return getattr(self, "case_NONE")(comm)
 	
@@ -83,7 +89,6 @@ class Switch():
 			if not elem.endswith("']"): elem = f"{elem}']"
 			tmp+=elem
 				
-
 		if not tmp.endswith("']"): tmp += "']" 
 
 		if tmp != "']":
@@ -126,43 +131,19 @@ class Switch():
 	def case_NONE(self, comm):
 		self.notFound(comm)	#if not found
 
+	def case_RESET(self):
+		print(chr(27) + "[2J")
 
-class Cmd(Shelter, Switch):
-	def __init__(self, data):
-		self.data = data
-
-	def printOut(self):
-		data = var.PATHDIR
-		for elem in data:	
-			elem = self.checkType(elem, data)
-			print(elem)
-
-	def changeColor(self, txt, code:"[escCde, style, txtCol, bgcol]")-> "colored string":
-		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"
-		tail = "\033[0;0m"
-		return f"{header}{txt}{tail}"
+	def case_CREATE(self, arg, command="create"):
+		if len(arg) == 0 :
+			return self.notFound("create", "no argument") 
+		for elem in arg:
+			if " " in elem: continue 
+			elif len(elem) == 0: continue 
+			var.PATHDIR[elem] = dict()
+		self.printOut()
 	
-	def notFound(self, command):
-		header = f"\x1b[1;31m"
-		tail = "\033[0;0m"
-		print(f"{header} command : '{command}' not found{tail}")
-
-	def convToPath(self, path):
-		path = path[2:-2]
-		path = path.replace("']['", "/")
-
-		font = [ "1", "34", "49"]
-		path = self.changeColor(path, ["\x1b[",font[0] ,font[1],font[2]])
-		return path
-
-	def promptColor(self, str):
-		header = f"\x1b[1;32m"
-		tail = "\033[0;0m"
-		return f"{header}{str}{tail}"
-
-		
-		
 
 
-
+	
 
