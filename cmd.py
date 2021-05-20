@@ -25,7 +25,7 @@ class Cmd(Shelter, Switch):
 	def notFound(self, command, arg="not found"):
 		header = f"\x1b[1;31m"
 		tail = "\033[0;0m"
-		print(f"{header} command : '{command}' {arg}{tail}")
+		print(f"{header} ERROR : '{command}' {arg}{tail}")
 
 	def convToPath(self, path):
 		path = path[2:-2]

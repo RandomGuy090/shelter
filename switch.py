@@ -59,11 +59,14 @@ class Switch():
 		elif comm in "reset":
 			return getattr(self, "case_RESET")()
 
-		elif comm in var.NEW_SHELTER:		#eg add XX
+		elif comm in var.NEW_SHELTER_KWORDS:		#eg add XX
 			return getattr(self, "case_CREATE_DIR")(arg)
 
-		elif comm in var.NEW_FILES:		#eg add XX
+		elif comm in var.NEW_FILES_KWORDS:		#eg add XX
 			return getattr(self, "case_CREATE_FILE")(arg)
+
+		elif comm in var.DEL_KWORDS:		#eg add XX
+			return getattr(self, "case_DELETE")(arg)
 
 		#--- adding new cases here
 		else:
@@ -156,15 +159,25 @@ class Switch():
 				out.append(elem)
 		arg = out		
 
+		
+		if len(arg)%2:
+			self.notFound({arg[-1]}, " has no content" )
+		
 		for i in range(0, (len(arg)-1), 2 ):
 			name = arg[i]
 			content = arg[i+1]
 			if " " in name or " " in content: continue 
 			elif len(name) == 0 or len(content) == 0: continue 
 			
-			print(f" name  {name}   content  {content}")
 			var.PATHDIR[name] = content
 		
+		self.printOut()
+
+	def case_DELETE(self, arg):
+		print(f"delete: {arg}")
+		print(f"avaliable catalogs {var.PATHDIR}")
+		for elem in arg:
+			del var.PATHDIR[elem]
 		self.printOut()
 	
 
