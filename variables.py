@@ -1,4 +1,5 @@
-FILE = "/home/randomguy90/PROGRAM/Python/shelter/passJson.txt"
+# FILE = "/home/randomguy90/PROGRAM/Python/shelter/passJson.txt"
+FILE = "/home/randomguy90/PROGRAM/Python/shelter/encrypted.gpga"
 EXT_KWORDS = ["q","exit","quit"]
 LS_KWORDS = ["ls", "list"]
 CD_KWORDS = ["", "cd"]
@@ -9,4 +10,6 @@ DEL_KWORDS = ["del", "rm", "remove", "delete"]
 
 PATH = ""
 PATHDIR = None
+GPGHOMEDIR = "/home/randomguy90/"
 
+FIRST_READ = ""

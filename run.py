@@ -9,11 +9,8 @@ import variables as var
 
 
 if __name__ == "__main__":
-	sh = Shelter()
-	data = sh.decrypt(var.FILE)
-	cmd = Cmd(data)
-	
-	var.PATHDIR = data
+	sh = Shelter(var.FILE)
+	cmd = Cmd()
 	cmd.printOut()
 
 	while True:

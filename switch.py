@@ -84,7 +84,6 @@ class Switch():
 		sys.exit(0)
 
 	def case_CD_UP(self):
-		print("case_CD_UP")
 
 		newPath = var.PATH.rsplit("']")
 		newPath = newPath[:-2]
@@ -174,8 +173,6 @@ class Switch():
 		self.printOut()
 
 	def case_DELETE(self, arg):
-		print(f"delete: {arg}")
-		print(f"avaliable catalogs {var.PATHDIR}")
 		for elem in arg:
 			del var.PATHDIR[elem]
 		self.printOut()

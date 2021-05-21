@@ -5,8 +5,8 @@ import variables as var
 import pyperclip
 
 class Cmd(Shelter, Switch):
-	def __init__(self, data):
-		self.data = data
+	def __init__(self, data="not used"):
+		self.data = var.PATHDIR
 
 	def printOut(self):
 		data = var.PATHDIR
@@ -45,7 +45,6 @@ class Cmd(Shelter, Switch):
 		self.copied()
 
 	def copied(self):
-
 		font = [ "1", "31", "49"]
 		info = "--> password copied <--"
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
