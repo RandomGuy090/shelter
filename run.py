@@ -1,5 +1,6 @@
 #! /bin/python
 import os, sys, readline, re
+import atexit
 
 from shelter import Shelter
 from cmd import  Cmd
@@ -11,6 +12,14 @@ import variables as var
 if __name__ == "__main__":
 	sh = Shelter(var.FILE)
 	cmd = Cmd()
+
+
+	def exit():
+		sh.encrypt(var.PATHDIR, var.FILE)
+
+		
+	atexit.register(exit)
+
 	cmd.printOut()
 
 	while True:
@@ -21,3 +30,5 @@ if __name__ == "__main__":
 		else:
 			read = input(f"{prompt}")
 		cmd.switch(read)
+
+

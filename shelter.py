@@ -11,11 +11,9 @@ class Shelter(object):
 		if not os.path.isfile(path):
 			self.failureExit("bad input file")
 
-		var.PATHDIR = GpgHandler().decrypt(path)
-		var.PATHDIR = self.parseJSON(var.PATHDIR)
-		var.FIRST_READ = var.PATHDIR		#compare later if user made any changes
-
+		var.PATHDIR = self.decrypt(path)
 		
+
 	def failureExit(self, command):
 		print("GPG init file error")
 		sys.exit(1)
@@ -25,14 +23,11 @@ class Shelter(object):
 		return False
 
 	def parseJSON(self, txt):
-		return json.loads(txt)
+		if isinstance(txt, dict):
+			return json.dumps(txt)
+		else:
+			return json.loads(txt)
 
-	def decrypt(self, file):
-		with open(file, "rt") as f:
-			## decrypt with gpg here
-			tmp = self.parseJSON(f.read())
-			self.buffer = tmp
-			return tmp
 
 	def checkType(self, txt, elem)->"dict":
 		font1 = [ "1", "34", "49"]
@@ -41,7 +36,21 @@ class Shelter(object):
 			txt = self.changeColor(txt, ["\x1b[",font1[0] ,font1[1],font1[2]])
 
 		elif isinstance(elem[txt], str):
-			txt = self.changeColor(txt, ["\x1b[", font2[0], font2[1], font2[2]])
-		
+			txt = self.changeColor(txt, ["\x1b[", font2[0], font2[1], font2[2]])		
 		return txt	
 
+	def decrypt(self, file):		#prepare and call gpg handler to decrypt
+		tmp = GpgHandler().decryptSYM(file)
+		tmp = self.parseJSON(tmp)
+		
+		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
+		return tmp
+
+	
+	def encrypt(self, content, file):		#prepare and call gpg handler to decrypt
+		tmp = self.parseJSON(content)
+		if var.PATHDIR == var.FIRST_READ:
+			return
+
+		tmp = GpgHandler().encryptSYM(tmp, file)
+		return tmp

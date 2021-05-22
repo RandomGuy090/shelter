@@ -1,5 +1,5 @@
 # FILE = "/home/randomguy90/PROGRAM/Python/shelter/passJson.txt"
-FILE = "/home/randomguy90/PROGRAM/Python/shelter/encrypted.gpga"
+FILE = "/home/randomguy90/PROGRAM/Python/shelter/encrypted.gpg"
 EXT_KWORDS = ["q","exit","quit"]
 LS_KWORDS = ["ls", "list"]
 CD_KWORDS = ["", "cd"]
