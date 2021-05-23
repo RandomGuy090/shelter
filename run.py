@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
 
 	def exit():
+		var.LAST_READ = cmd.switch("cd")
 		sh.encrypt(var.PATHDIR, var.FILE)
 
 		

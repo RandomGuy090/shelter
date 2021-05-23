@@ -21,7 +21,6 @@ class GpgHandler():
 
 
 	def encryptSYM(self, content, file):
-
 		data = self.gpg.encrypt(content, None, symmetric=True)
 		if data.ok:
 			with open(file, "wb") as f:

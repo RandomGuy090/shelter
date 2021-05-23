@@ -109,6 +109,7 @@ class Switch():
 		self.printOut()
 
 	def case_CD_to(self, arg):
+		print(f"case_CD_to  arg   {arg}")
 		if isinstance(arg, list): 	#if comes from cd {path}
 			while[-1] == "":
 				arg = arg[:-1]
@@ -129,7 +130,8 @@ class Switch():
 	def case_CD(self):
 		var.PATHDIR = self.data
 		var.PATH = ""
-		self.printOut()
+		ret = self.printOut()
+		return ret
 	
 
 	def case_NONE(self, comm):

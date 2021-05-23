@@ -2,8 +2,6 @@ import variables  as var
 import re, readline
 
 
-
-
 class Completer(object):
 
 

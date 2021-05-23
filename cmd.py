@@ -16,6 +16,7 @@ class Cmd(Shelter, Switch):
 			elem = self.checkType(elem, data)
 			
 			print(elem)
+		return data
 
 	def changeColor(self, txt, code:"[escCde, style, txtCol, bgcol]")-> "colored string":
 		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"
