@@ -4,7 +4,7 @@ from re import sub
 
 class Switch():
 
-	def switch(self, read):
+	def switch(self, read:str):
 		read = read.rsplit(" ")
 		try:
 			arg = read[1:]
@@ -16,31 +16,39 @@ class Switch():
 			arg = None
 			comm = read[0]
 
-		if comm in var.LS_KWORDS:			#eg ls
+		if comm in var.LS_KWORDS:			
+			"eg ls"
 			return getattr(self, "case_LIST")()
 		
-		elif comm == "lol":					#eg lol
+		elif comm == "lol":					
+			"eg lol"
 			return getattr(self, "case_LOL")()
 		
-		elif comm in var.EXT_KWORDS :		#eg exit
+		elif comm in var.EXT_KWORDS :		
+			"eg exit"
 			return getattr(self, "case_EXIT")()
 
-		elif comm in var.CD_KWORDS:			#eg cd sth
+		elif comm in var.CD_KWORDS:		
+			"eg cd sth"	
 			if len(arg) > 0:				#if argumest exists
-				if f"{comm} {arg[0]}" in var.CD_UP_KWORDS:	#eg cd ..
+				if f"{comm} {arg[0]}" in var.CD_UP_KWORDS:	
+					"eg cd .."
 					return getattr(self, "case_CD_UP")()
 
-				elif arg[0] in self.data: 	#eg cd path/to/file
+				elif arg[0] in self.data: 	
+					"eg cd path/to/file"
 					return getattr(self, "case_CD_to")(arg)
 
-				elif arg[0].rsplit("/") in firstLayer: 	#eg cd path/to/file
+				elif arg[0].rsplit("/") in firstLayer: 	
+					"eg cd path/to/file"
 					return getattr(self, "case_CD_to")(arg)
 
 				elif f"{comm} {arg}" in var.CD_UP_KWORDS:	
-					
+					"eg cd .."
 					return getattr(self, "case_CD_UP")()
 				
-				else:					#just cd to root
+				else:					
+					"just cd to root"
 					return getattr(self, "case_CD")()
 
 			else:
@@ -51,7 +59,6 @@ class Switch():
 				self.clipboard(passwd)		#tmp
 				return None
 			else:
-				# return getattr(self, "case_go_to")(comm)	
 				return getattr(self, "case_CD_to")(comm)	
 				
 		elif comm == "":
@@ -74,16 +81,20 @@ class Switch():
 	
 
 	def case_LIST(self):
+		"eg ls"
 		self.printOut()
 
 	def case_LOL(self):
+		"eg testing"
 		print("LOOOOL")
 		self.printOut()
 	
 	def case_EXIT(self):
+		"eg q"
 		sys.exit(0)
 
 	def case_CD_UP(self):
+		"eg cd .."
 
 		newPath = var.PATH.rsplit("']")
 		newPath = newPath[:-2]
@@ -108,8 +119,9 @@ class Switch():
 		
 		self.printOut()
 
-	def case_CD_to(self, arg):
-		if isinstance(arg, list): 	#if comes from cd {path}
+	def case_CD_to(self, arg:str):
+		"if comes from cd PATH"
+		if isinstance(arg, list): 	
 			while[-1] == "":
 				arg = arg[:-1]
 			var.PATH = f"{var.PATH}{arg}"
@@ -121,25 +133,28 @@ class Switch():
 
 		self.printOut()
 
-	def case_go_to(self, loc):
+	def case_go_to(self, loc:str):
 		var.PATHDIR = var.PATHDIR[loc]	#go back
 		var.PATH += f"{loc}/"
 		self.printOut()
 
 	def case_CD(self):
+		"eg. cd"
 		var.PATHDIR = self.data
 		var.PATH = ""
 		ret = self.printOut()
 		return ret
-	
 
-	def case_NONE(self, comm):
+	def case_NONE(self, comm:str):
+		"eg.    "
 		self.notFound(comm)	#if not found
 
 	def case_RESET(self):
+		"eg reset"
 		print(chr(27) + "[2J")
 
-	def case_CREATE_DIR(self, arg, command="create"):
+	def case_CREATE_DIR(self, arg:str, command="create"):
+		"create"
 		if len(arg) == 0 :
 			return self.notFound(command, "no argument") 
 		for elem in arg:
@@ -149,7 +164,8 @@ class Switch():
 		self.printOut()
 
 
-	def case_CREATE_FILE(self, arg, command="add"):
+	def case_CREATE_FILE(self, arg:str, command="add"):
+		"eg add"
 		if len(arg) == 0 :
 			return self.notFound(command, "no argument") 
 
@@ -158,7 +174,6 @@ class Switch():
 			if len(elem) > 0 and  not " " in elem:
 				out.append(elem)
 		arg = out		
-
 		
 		if len(arg)%2:
 			self.notFound({arg[-1]}, " has no content" )
@@ -173,7 +188,8 @@ class Switch():
 		
 		self.printOut()
 
-	def case_DELETE(self, arg):
+	def case_DELETE(self, arg:str):
+		"eg rm"
 		for elem in arg:
 			del var.PATHDIR[elem]
 		self.printOut()
