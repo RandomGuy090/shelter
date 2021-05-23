@@ -11,12 +11,13 @@ class Cmd(Shelter, Switch):
 	def printOut(self):
 		data = var.PATHDIR
 		var.COMMANDS = []
+		ret = list()
 		for elem in data:	
 			var.COMMANDS.append(elem)
 			elem = self.checkType(elem, data)
-			
-			print(elem)
-		return data
+			ret.append(elem)			
+			# print(elem)		
+		return data, ret
 
 	def changeColor(self, txt, code:"[escCde, style, txtCol, bgcol]")-> "colored string":
 		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"

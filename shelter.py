@@ -49,7 +49,6 @@ class Shelter(object):
 	
 	def encrypt(self, content, file):		#prepare and call gpg handler to decrypt
 		tmp = self.parseJSON(content)
-
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
 			return
