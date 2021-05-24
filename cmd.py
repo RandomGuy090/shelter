@@ -1,10 +1,11 @@
 from shelter import Shelter
 from switch import Switch
+from generator import Generator
 import variables as var
 
 import pyperclip
 
-class Cmd(Shelter, Switch):
+class Cmd(Shelter, Switch, Generator):
 	def __init__(self, data="not used"):
 		self.data = var.PATHDIR
 
@@ -58,6 +59,10 @@ class Cmd(Shelter, Switch):
 		info = "--> password copied <--"
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
 		print(info)
+
+
+
+
 
 		
 		

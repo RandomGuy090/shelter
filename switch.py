@@ -75,6 +75,9 @@ class Switch():
 		elif comm in var.DEL_KWORDS:		#eg add XX
 			return getattr(self, "case_DELETE")(arg)
 
+		elif comm in var.GEN_WORDS:		#eg generate XX
+			return getattr(self, "case_GENERATE")(arg)
+
 		#--- adding new cases here
 		else:
 			return getattr(self, "case_NONE")(comm)
@@ -153,7 +156,7 @@ class Switch():
 		"eg reset"
 		print(chr(27) + "[2J")
 
-	def case_CREATE_DIR(self, arg:str, command="create"):
+	def case_CREATE_DIR(self, arg:list, command="create"):
 		"create"
 		if len(arg) == 0 :
 			return self.notFound(command, "no argument") 
@@ -164,7 +167,7 @@ class Switch():
 		self.printOut()
 
 
-	def case_CREATE_FILE(self, arg:str, command="add"):
+	def case_CREATE_FILE(self, arg:list, command="add"):
 		"eg add"
 		if len(arg) == 0 :
 			return self.notFound(command, "no argument") 
@@ -188,11 +191,29 @@ class Switch():
 		
 		self.printOut()
 
-	def case_DELETE(self, arg:str):
+	def case_DELETE(self, arg:list):
 		"eg rm"
 		for elem in arg:
 			del var.PATHDIR[elem]
 		self.printOut()
+
+	def case_GENERATE(self, arg:list):
+		"eg generate [file] [passlen]"
+		argLen = len(arg)
+		for i in range(0, len(arg), 2):
+			if isinstance(arg[i], str):
+				pass
+			if i +1 < argLen:
+				if isinstance(arg[i+1], int) :
+					leng = 8
+				else:
+					leng = arg[i+1]
+			else:
+				leng = 8
+				pass
+			passwd = self.generate(leng)
+			self.case_CREATE_FILE((arg[i], passwd), command="gen")
+	
 	
 
 
