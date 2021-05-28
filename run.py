@@ -1,6 +1,6 @@
 #! /bin/python
 import os, sys, readline, re
-import atexit
+import atexit, getopt
 
 from shelter import Shelter
 from cmd import  Cmd
@@ -20,7 +20,35 @@ def exit():
 	var.LAST_READ = cmd.switch("cd")[0]
 	sh.encrypt(var.PATHDIR, var.FILE)
 
+def printHelp():
+	"help printout"
+	print(""" ./shelter.py <options>
+		
+
+		""")
+def flags():
+	try:
+		argv = sys.argv[1:]
+		options, reminder = getopt.getopt(argv,"f:r:h:",["file=","recip=", "help="])
+
+		for opt, arg in options:
+		    if opt in ('-f', '--file'):
+		        var.FILE = arg
+		    elif opt in ('-r', '--recip'):
+		        var.RECIP = arg
+		    elif opt in ("-h", "--help"):
+		    	printHelp()
+		    	sys.exit(0)
+
+	except getopt.GetoptError as e:
+		print(e)
+		printHelp()
+		sys.exit(0)
+
+
+
 if __name__ == "__main__":
+	flags()
 	sh = Shelter(var.FILE)
 	cmd = Cmd()
 	atexit.register(exit)

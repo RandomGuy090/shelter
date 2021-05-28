@@ -40,18 +40,24 @@ class Shelter(object):
 
 	def decrypt(self, file:"path to file")->str:		#prepare and call gpg handler to decrypt
 		"decrypts file"
-		tmp = GpgHandler().decryptSYM(file)
+		tmp = GpgHandler().decrypt(file)
+
 		tmp = self.parseJSON(tmp)
-		
+
 		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
 		return tmp
 	
 	def encrypt(self, content, file:"path to file")->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
+
 		tmp = self.parseJSON(content)
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
 			return
+		print(var.RECIP)
+		if var.RECIP == "":
+			tmp = GpgHandler().encryptSYM(tmp, file)
+		else:
+			tmp = GpgHandler().encrypt_ASYM(tmp, file)
 
-		tmp = GpgHandler().encryptSYM(tmp, file)
 		return tmp

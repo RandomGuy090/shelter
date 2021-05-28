@@ -7,6 +7,7 @@ PATHDIR = None
 GPGHOMEDIR = "/home/randomguy90/"
 FIRST_READ = ""
 LAST_READ = ""
+RECIP = ""
 
 #commands
 EXT_KWORDS = ["q","exit","quit"]
