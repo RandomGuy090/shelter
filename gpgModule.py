@@ -38,24 +38,24 @@ class GpgHandler(object):
 			print("error")
 
 	def encrypt_ASYM(self, content, file):
-		print(f"comparison {var.RECIP}    {var.RECIP_FLAG}")
-		if var.RECIP != var.RECIP_FLAG:
+		print(f"{var.RECIP}  {var.RECIP_FLAG}")
+
+		if var.RECIP_FLAG == "self":
+			fprit = self.getFingerpritMenu(var.RECIP)
+		elif var.RECIP != var.RECIP_FLAG:
 			fprit = self.getFingerpritMenu(var.RECIP_FLAG)
 		else:
-			fprit = self.getFingerpritMenu()
-
-		
+			fprit = self.getFingerpritMenu()		
 			
 		data = self.gpg.encrypt(content, fprit, always_trust=True)
 		if data.ok:
 			with open(file, "wb") as f:
 				f.write(data.data)
 		else:
-			print(data.status)
-			print("error")
+			pass
 
 	def getMail(self, str):
-		print(f"getMail  {str}")
+
 		try:
 			str = str.rsplit(" ")[1][1:-1]
 			return str
@@ -76,8 +76,6 @@ class GpgHandler(object):
 			if mail not in klist:
 				mail = input("input mail:  ")
 
-
-		print(mail)
 		fprit = self.getKeyBymail(mail)
 		return fprit
 
@@ -85,15 +83,10 @@ class GpgHandler(object):
 	def getKeyBymail(self, mail):
 		keys = self.gpg.list_keys()
 
-		print(mail)
 		mail = mail.split(" ")[0]
 
 		for key in keys:
-
 			if mail in key["uids"][0]:
-
-				print("INSIDE")
-
 				return key["fingerprint"]
 
 
