@@ -35,7 +35,7 @@ def flags():
 		    if opt in ('-f', '--file'):
 		        var.FILE = arg
 		    elif opt in ('-r', '--recip'):
-		        var.RECIP = arg
+		        var.RECIP_FLAG = arg
 		    elif opt in ("-h", "--help"):
 		    	printHelp()
 		    	sys.exit(0)

@@ -193,9 +193,12 @@ class Switch():
 
 	def case_DELETE(self, arg:list):
 		"eg rm"
-		for elem in arg:
-			del var.PATHDIR[elem]
-		self.printOut()
+		try:
+			for elem in arg:
+				del var.PATHDIR[elem]
+		except:
+			pass
+		self.printOut()	
 
 	def case_GENERATE(self, arg:list):
 		"eg generate [file] [passlen]"

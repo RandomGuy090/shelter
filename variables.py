@@ -8,6 +8,7 @@ GPGHOMEDIR = "/home/randomguy90/"
 FIRST_READ = ""
 LAST_READ = ""
 RECIP = ""
+RECIP_FLAG = ""
 
 #commands
 EXT_KWORDS = ["q","exit","quit"]
