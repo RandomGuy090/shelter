@@ -23,22 +23,25 @@ def exit():
 def printHelp():
 	"help printout"
 	print(""" ./shelter.py <options>
-		
+	   -f --file 		file location
+	   -r --recipient	recipient       
+	   -s --secret		import secret key
+	   -p --public		import public key
+			""")
 
-		""")
 def flags():
 	try:
 		argv = sys.argv[1:]
 		options, reminder = getopt.getopt(argv,"f:r:h:",["file=","recip=", "help="])
 
 		for opt, arg in options:
-		    if opt in ('-f', '--file'):
-		        var.FILE = arg
-		    elif opt in ('-r', '--recip'):
-		        var.RECIP_FLAG = arg
-		    elif opt in ("-h", "--help"):
-		    	printHelp()
-		    	sys.exit(0)
+			if opt in ('-f', '--file'):
+				var.FILE = arg
+			elif opt in ('-r', '--recip'):
+				var.RECIP_FLAG = arg
+			elif opt in ("-h", "--help"):
+				printHelp()
+				sys.exit(0)
 
 	except getopt.GetoptError as e:
 		print(e)

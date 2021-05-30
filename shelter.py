@@ -61,3 +61,4 @@ class Shelter(object):
 			tmp = GpgHandler().encrypt_ASYM(tmp, file)
 
 		return tmp
+	
