@@ -11,10 +11,18 @@ class Shelter(object):
 		if not os.path.isfile(path):
 			self.failureExit("bad input file")
 
+		if var.PRIV_KEY:
+			if self.import_key(var.PRIV_KEY) != "ok":
+				self.failureExit("importing key error")
+
+		if var.PUBLIC_KEY:
+			if self.import_key(var.PUBLIC_KEY) != "ok":
+				self.failureExit("importing key error")
+
 		var.PATHDIR = self.decrypt(path)
 		
-	def failureExit(self, command:str)->None:
-		print("GPG init file error")
+	def failureExit(self, command="")->None:
+		print(f"GPG init file error  {command}")
 		sys.exit(1)
 
 	def returnFalse(self):
@@ -22,8 +30,8 @@ class Shelter(object):
 
 	def parseJSON(self, txt:str)->"str/dict":
 		"parse to/from json"
-		if txt == "":
-			self.failureExit("decoding error")
+		# if txt == "":
+		# 	self.failureExit("decoding error")
 		if isinstance(txt, dict):
 			return json.dumps(txt)
 		else:
@@ -43,7 +51,8 @@ class Shelter(object):
 	def decrypt(self, file:"path to file")->str:		#prepare and call gpg handler to decrypt
 		"decrypts file"
 		tmp = GpgHandler().decrypt(file)
-
+		if not tmp:
+			self.failureExit("file not decrypted")
 		tmp = self.parseJSON(tmp)
 
 		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
@@ -56,8 +65,6 @@ class Shelter(object):
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
 			return
-		print(var.RECIP)
-		print(var.RECIP_FLAG)
 		if var.RECIP == "" and var.RECIP_FLAG == "":
 			tmp = GpgHandler().encryptSYM(tmp, file)
 		else:
@@ -72,6 +79,7 @@ class Shelter(object):
 			return "ok"
 		else: 
 			return "error"
+	
 	def delete_keys(self):
 		return GpgHandler().delete_keys()
 

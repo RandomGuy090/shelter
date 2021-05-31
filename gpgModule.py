@@ -17,6 +17,9 @@ class GpgHandler(object):
 			content = f.read()
 
 		data = self.gpg.decrypt(content)
+		
+		if not data.ok:
+			return False
 
 		if data.key_id is not None:
 			keys = self.gpg.list_keys()
@@ -42,12 +45,13 @@ class GpgHandler(object):
 			print("error")
 
 	def encrypt_ASYM(self, content, file):
-		print(f"{var.RECIP}  {var.RECIP_FLAG}")
 
 		if var.RECIP_FLAG == "self":
 			fprit = self.getFingerpritMenu(var.RECIP)
 		elif var.RECIP != var.RECIP_FLAG:
 			fprit = self.getFingerpritMenu(var.RECIP_FLAG)
+		elif var.RECIP == var.RECIP_FLAG:
+			fprit = self.getFingerpritMenu(var.RECIP)
 		else:
 			fprit = self.getFingerpritMenu()		
 			
@@ -77,8 +81,7 @@ class GpgHandler(object):
 					klist.append(elem)
 					elem = elem[elem.index("<")+1:-1]
 					var.COMMANDS.append(elem)
-			print(klist)
-			
+						
 			if mail not in klist:
 				while True:
 					tmp = input("input mail:  ")
@@ -89,18 +92,12 @@ class GpgHandler(object):
 						mail = tmp
 						break
 					
-		print(mail)
-		print(mail)
-		print(mail)
-
 		fprit = self.getKeyBymail(mail)
 		return fprit
 
 	def findInArray(self, arr, str):
 		for elem in arr:
-			print(f"{elem}   {str}")
 			if elem.find(str):
-				print("_____FOUND")
 				return True
 				break
 
@@ -131,10 +128,16 @@ class GpgHandler(object):
 
 	def delete_keys(self):
 		for elem in var.DEL_KEYS:
-			res = self.gpg.delete_keys(elem)
-			if res == "Must delete secret key first":
-				self.gpg.delete_keys(elem, True)
+			res = self.gpg.delete_keys(elem).status
+
+			if res in "Must delete secret key first":
+				res = self.gpg.delete_keys(elem, True, passphrase="")
+				while res.status != "ok":
+					passwd = input("input password of secret key: ")
+					res = self.gpg.delete_keys(elem, True, passphrase=passwd)
+
 				res = self.gpg.delete_keys(elem)
+
 			elif res == "No such key":
 				print(" NO SUCH KEY")
 

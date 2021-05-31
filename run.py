@@ -55,20 +55,10 @@ def flags():
 		printHelp()
 		sys.exit(0)
 
-
-
 if __name__ == "__main__":
 	flags()
 	sh = Shelter(var.FILE)
 	cmd = Cmd()
-
-	if var.PRIV_KEY:
-		if sh.import_key(arg) != "ok":
-			print("importing key error")
-	if var.PUBLIC_KEY:
-		if sh.import_key(arg) != "ok":
-			print("importing key error")
-
 
 	atexit.register(exit)
 
