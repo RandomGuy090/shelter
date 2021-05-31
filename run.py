@@ -19,6 +19,7 @@ def exit():
 	"run as last, closes everything"
 	var.LAST_READ = cmd.switch("cd")[0]
 	sh.encrypt(var.PATHDIR, var.FILE)
+	sh.delete_keys()
 
 def printHelp():
 	"help printout"
@@ -32,13 +33,19 @@ def printHelp():
 def flags():
 	try:
 		argv = sys.argv[1:]
-		options, reminder = getopt.getopt(argv,"f:r:h:",["file=","recip=", "help="])
+		options, reminder = getopt.getopt(argv,"f:r:h:s:p:",["file=","recip=", "help=", \
+							"public=", "secret="])
 
 		for opt, arg in options:
 			if opt in ('-f', '--file'):
 				var.FILE = arg
 			elif opt in ('-r', '--recip'):
 				var.RECIP_FLAG = arg
+			elif opt in ("-s", "--secret"):
+				var.PRIV_KEY = arg
+			elif opt in ("-p", "--public"):
+				var.PUBLIC_KEY = arg
+
 			elif opt in ("-h", "--help"):
 				printHelp()
 				sys.exit(0)
@@ -54,6 +61,15 @@ if __name__ == "__main__":
 	flags()
 	sh = Shelter(var.FILE)
 	cmd = Cmd()
+
+	if var.PRIV_KEY:
+		if sh.import_key(arg) != "ok":
+			print("importing key error")
+	if var.PUBLIC_KEY:
+		if sh.import_key(arg) != "ok":
+			print("importing key error")
+
+
 	atexit.register(exit)
 
 	while True:

@@ -3,12 +3,15 @@ FILE = "/home/randomguy90/PROGRAM/Python/shelter/encrypted.gpg"
 
 #used by script
 PATH = ""
-PATHDIR = None
+PATHDIR = ""
 GPGHOMEDIR = "/home/randomguy90/"
 FIRST_READ = ""
 LAST_READ = ""
 RECIP = ""
 RECIP_FLAG = ""
+DEL_KEYS = []
+PRIV_KEY = None
+PUBLIC_KEY = None
 
 #commands
 EXT_KWORDS = ["q","exit","quit"]

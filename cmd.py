@@ -14,6 +14,7 @@ class Cmd(Shelter, Switch, Generator):
 		data = var.PATHDIR
 		var.COMMANDS = []
 		ret = list()
+
 		for elem in data:	
 			var.COMMANDS.append(elem)
 			elem = self.checkType(elem, data)

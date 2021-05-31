@@ -5,7 +5,7 @@ class GpgHandler(object):
 
 	def __init__(self, gpghome=None):
 		if gpghome == None:
-			gpghome = f"{os.environ['HOME']}.gnupg/"
+			self.gpghome = f"{os.environ['HOME']}.gnupg/"
 
 		try:
 			self.gpg = gnupg.GPG(gnupghome=gpghome)
@@ -13,19 +13,23 @@ class GpgHandler(object):
 			print("GPG homedir error")
 
 	def decrypt(self, file):
-		with open(file, "rb") as f:
+		with open(file, "rt") as f:
 			content = f.read()
 
 		data = self.gpg.decrypt(content)
+
 		if data.key_id is not None:
 			keys = self.gpg.list_keys()
 			for key in keys:
 				if data.key_id in key["subkeys"][0]:
 					mail = key["uids"][0]
 					if var.RECIP != mail:
-						var.RECIP  = self.getMail(mail )
+						var.RECIP  = self.getMail(mail)
+			print(f"unencrypted with: {var.RECIP}")
 
-		data = str(data.data, encoding="utf-8")
+
+		data = str(data)
+
 		return data
 
 
@@ -89,7 +93,31 @@ class GpgHandler(object):
 			if mail in key["uids"][0]:
 				return key["fingerprint"]
 
+	def import_key(self, file):
+		"gpg handler to import keys"
+		try:
+			with open(file, "rt") as f:
+				key = f.read()
+		except:
+			return "File error"
 
+		res = self.gpg.import_keys(key)
+
+		if res.count == 0 :
+			return "import key error"
+		else:
+			return res.results[0]["fingerprint"]
+
+	def delete_keys(self):
+		for elem in var.DEL_KEYS:
+			res = self.gpg.delete_keys(elem)
+			if res == "Must delete secret key first":
+				self.gpg.delete_keys(elem, True)
+				res = self.gpg.delete_keys(elem)
+			elif res == "No such key":
+				print(" NO SUCH KEY")
+
+		return True
 
 
 

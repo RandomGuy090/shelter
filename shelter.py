@@ -55,10 +55,21 @@ class Shelter(object):
 			print("exit, no save")
 			return
 		print(var.RECIP)
-		if var.RECIP == "":
+		print(var.RECIP_FLAG)
+		if var.RECIP == "" and var.RECIP_FLAG == "":
 			tmp = GpgHandler().encryptSYM(tmp, file)
 		else:
 			tmp = GpgHandler().encrypt_ASYM(tmp, file)
 
 		return tmp
-	
+
+	def import_key(self, file):
+		res = GpgHandler().import_key(file)
+		if "error" not in res:
+			var.DEL_KEYS.append(res)
+			return "ok"
+		else: 
+			return "error"
+	def delete_keys(self):
+		return GpgHandler().delete_keys()
+
