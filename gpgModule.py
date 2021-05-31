@@ -77,11 +77,32 @@ class GpgHandler(object):
 					klist.append(elem)
 					elem = elem[elem.index("<")+1:-1]
 					var.COMMANDS.append(elem)
+			print(klist)
+			
 			if mail not in klist:
-				mail = input("input mail:  ")
+				while True:
+					tmp = input("input mail:  ")
+					if tmp == "":
+						mail = var.RECIP
+						break
+					if self.findInArray(klist, tmp):
+						mail = tmp
+						break
+					
+		print(mail)
+		print(mail)
+		print(mail)
 
 		fprit = self.getKeyBymail(mail)
 		return fprit
+
+	def findInArray(self, arr, str):
+		for elem in arr:
+			print(f"{elem}   {str}")
+			if elem.find(str):
+				print("_____FOUND")
+				return True
+				break
 
 
 	def getKeyBymail(self, mail):

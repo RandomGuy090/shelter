@@ -22,6 +22,8 @@ class Shelter(object):
 
 	def parseJSON(self, txt:str)->"str/dict":
 		"parse to/from json"
+		if txt == "":
+			self.failureExit("decoding error")
 		if isinstance(txt, dict):
 			return json.dumps(txt)
 		else:
