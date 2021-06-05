@@ -18,7 +18,6 @@ def show():
 if __name__ == "__main__":
 
 	cmd = Cmd()
-	
 
 	while True:
 		show()
