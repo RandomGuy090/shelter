@@ -4,10 +4,27 @@ from generator import Generator
 import variables as var
 
 import pyperclip
+import atexit, getopt, sys
+
 
 class Cmd(Shelter, Switch, Generator):
+
 	def __init__(self, data="not used"):
+		self.flags()
+		atexit.register(self.exitFuntion)
+		super().__init__(var.FILE)
 		self.data = var.PATHDIR
+		
+
+	def exitFuntion(self):
+		"run as last, closes everything"
+		var.LAST_READ = self.switch("cd")[0]
+
+		self.encrypt(var.PATHDIR, var.FILE)
+		
+		self.delete_keys()
+
+
 
 	def printOut(self)-> list:
 		"returns list of 1 normal elements 2 colored elements"
@@ -60,6 +77,40 @@ class Cmd(Shelter, Switch, Generator):
 		info = "--> password copied <--"
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
 		print(info)
+	
+	def flags(self):
+		try:
+			argv = sys.argv[1:]
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:",["file=","recip=", "help=", \
+								"public=", "secret="])
+
+			for opt, arg in options:
+				if opt in ('-f', '--file'):
+					var.FILE = arg
+				elif opt in ('-r', '--recip'):
+					var.RECIP_FLAG = arg
+				elif opt in ("-s", "--secret"):
+					var.PRIV_KEY = arg
+				elif opt in ("-p", "--public"):
+					var.PUBLIC_KEY = arg
+
+				elif opt in ("-h", "--help"):
+					self.printHelp()
+					sys.exit(0)
+
+		except getopt.GetoptError as e:
+			print(e)
+			printHelp()
+			sys.exit(0)
+	
+	def printHelp():
+		"help printout"
+		print(""" ./shelter.py <options>
+		   -f --file 		file location
+		   -r --recipient	recipient       
+		   -s --secret		import secret key
+		   -p --public		import public key
+				""")
 
 
 

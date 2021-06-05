@@ -137,6 +137,7 @@ class Switch():
 		self.printOut()
 
 	def case_go_to(self, loc:str):
+	
 		var.PATHDIR = var.PATHDIR[loc]	#go back
 		var.PATH += f"{loc}/"
 		self.printOut()

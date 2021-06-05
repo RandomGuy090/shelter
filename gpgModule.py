@@ -13,6 +13,7 @@ class GpgHandler(object):
 			print("GPG homedir error")
 
 	def decrypt(self, file):
+		print(file)
 		with open(file, "rt") as f:
 			content = f.read()
 
@@ -119,7 +120,7 @@ class GpgHandler(object):
 		except:
 			return "File error"
 
-		res = self.gpg.import_keys(key)
+		res = self.gpg.import_keys(key, passphrase="ASDwer4852")
 
 		if res.count == 0 :
 			return "import key error"

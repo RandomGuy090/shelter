@@ -18,8 +18,9 @@ class Shelter(object):
 		if var.PUBLIC_KEY:
 			if self.import_key(var.PUBLIC_KEY) != "ok":
 				self.failureExit("importing key error")
-
+		
 		var.PATHDIR = self.decrypt(path)
+
 		
 	def failureExit(self, command="")->None:
 		print(f"GPG init file error  {command}")
@@ -30,8 +31,8 @@ class Shelter(object):
 
 	def parseJSON(self, txt:str)->"str/dict":
 		"parse to/from json"
-		# if txt == "":
-		# 	self.failureExit("decoding error")
+		if txt == "":
+			self.failureExit("decoding error")
 		if isinstance(txt, dict):
 			return json.dumps(txt)
 		else:
@@ -60,7 +61,7 @@ class Shelter(object):
 	
 	def encrypt(self, content, file:"path to file")->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
-
+		
 		tmp = self.parseJSON(content)
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
