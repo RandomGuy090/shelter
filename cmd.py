@@ -81,8 +81,8 @@ class Cmd(Shelter, Switch, Generator):
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:",["file=","recip=", "help=", \
-								"public=", "secret="])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:o:",["file=","recip=", "help=", \
+								"public=", "secret=", "online="])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
@@ -93,17 +93,19 @@ class Cmd(Shelter, Switch, Generator):
 					var.PRIV_KEY = arg
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
+				elif opt in ("-o", "--online"):
+					var.ONLINE = arg
 
 				elif opt in ("-h", "--help"):
+					print("helpp")
 					self.printHelp()
 					sys.exit(0)
 
 		except getopt.GetoptError as e:
-			print(e)
-			printHelp()
+			self.printHelp()
 			sys.exit(0)
 	
-	def printHelp():
+	def printHelp(self):
 		"help printout"
 		print(""" ./shelter.py <options>
 		   -f --file 		file location
