@@ -1,13 +1,15 @@
 from shelter import Shelter
 from switch import Switch
 from generator import Generator
+from filesource import Filesource
+
 import variables as var
 
 import pyperclip
 import atexit, getopt, sys
 
 
-class Cmd(Shelter, Switch, Generator):
+class Cmd(Shelter, Switch, Generator, Filesource):
 
 	def __init__(self, data="not used"):
 		self.flags()
@@ -20,7 +22,7 @@ class Cmd(Shelter, Switch, Generator):
 		"run as last, closes everything"
 		var.LAST_READ = self.switch("cd")[0]
 
-		self.encrypt(var.PATHDIR, var.FILE)
+		self.encrypt(var.PATHDIR)
 		
 		self.delete_keys()
 
@@ -76,28 +78,39 @@ class Cmd(Shelter, Switch, Generator):
 		font = [ "1", "31", "49"]
 		info = "--> password copied <--"
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
-		print(info)
+
+
+	def processFileName(self, file):
+		if file.startswith("http"):
+			var.CONTENT = self.getHttp(file)
+
+		elif file.startswith("tcp"):
+			print("tcp source")
+			#connect here with ssh server and get file
+
+		else:
+			var.CONTENT = self.readFile()
+
 	
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:o:",["file=","recip=", "help=", \
-								"public=", "secret=", "online="])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:",["file=","recip=", "help=", \
+								"public=", "secret="])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
 					var.FILE = arg
+					self.processFileName(arg)
+					# var.FILE = arg
 				elif opt in ('-r', '--recip'):
 					var.RECIP_FLAG = arg
 				elif opt in ("-s", "--secret"):
 					var.PRIV_KEY = arg
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
-				elif opt in ("-o", "--online"):
-					var.ONLINE = arg
 
 				elif opt in ("-h", "--help"):
-					print("helpp")
 					self.printHelp()
 					sys.exit(0)
 

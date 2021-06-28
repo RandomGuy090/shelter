@@ -12,7 +12,8 @@ RECIP_FLAG = ""
 DEL_KEYS = []
 PRIV_KEY = None
 PUBLIC_KEY = None
-
+ONLINE = None
+CONTENT = None
 #commands
 EXT_KWORDS = ["q","exit","quit"]
 LS_KWORDS = ["ls", "list"]

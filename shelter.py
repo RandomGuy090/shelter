@@ -8,8 +8,8 @@ class Shelter(object):
 	buffer = None
 	
 	def __init__(self, path:str):
-		if not os.path.isfile(path):
-			self.failureExit("bad input file")
+		# if not os.path.isfile(path):
+		# 	self.failureExit("bad input file")
 
 		if var.PRIV_KEY:
 			if self.import_key(var.PRIV_KEY) != "ok":
@@ -19,7 +19,7 @@ class Shelter(object):
 			if self.import_key(var.PUBLIC_KEY) != "ok":
 				self.failureExit("importing key error")
 		
-		var.PATHDIR = self.decrypt(path)
+		var.PATHDIR = self.decrypt()
 
 		
 	def failureExit(self, command="")->None:
@@ -49,9 +49,15 @@ class Shelter(object):
 			txt = self.changeColor(txt, ["\x1b[", font2[0], font2[1], font2[2]])		
 		return txt	
 
-	def decrypt(self, file:"path to file")->str:		#prepare and call gpg handler to decrypt
-		"decrypts file"
-		tmp = GpgHandler().decrypt(file)
+	def readFile(self):
+		with open(var.FILE, "rt") as f:
+			content = f.read()
+			return content
+
+	def decrypt(self)->str:		#prepare and call gpg handler to decrypt
+		"decrypts file"			
+
+		tmp = GpgHandler().decrypt(var.CONTENT)
 		if not tmp:
 			self.failureExit("file not decrypted")
 		tmp = self.parseJSON(tmp)
@@ -59,17 +65,21 @@ class Shelter(object):
 		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
 		return tmp
 	
-	def encrypt(self, content, file:"path to file")->str:		#prepare and call gpg handler to decrypt
+	def encrypt(self, content)->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
+		if var.FILE.startswith("http"):
+			print("cannot save in http mode")
+			self.failureExit("cannot save in http source mode")
+			#extend here with prompt asking for new file location
 		
 		tmp = self.parseJSON(content)
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
 			return
 		if var.RECIP == "" and var.RECIP_FLAG == "":
-			tmp = GpgHandler().encryptSYM(tmp, file)
+			tmp = GpgHandler().encryptSYM(tmp, var.FILE)
 		else:
-			tmp = GpgHandler().encrypt_ASYM(tmp, file)
+			tmp = GpgHandler().encrypt_ASYM(tmp, var.FILE)
 
 		return tmp
 

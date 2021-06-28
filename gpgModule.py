@@ -13,11 +13,8 @@ class GpgHandler(object):
 			print("GPG homedir error")
 
 	def decrypt(self, file):
-		print(file)
-		with open(file, "rt") as f:
-			content = f.read()
 
-		data = self.gpg.decrypt(content)
+		data = self.gpg.decrypt(file)
 		
 		if not data.ok:
 			return False
@@ -139,8 +136,8 @@ class GpgHandler(object):
 
 				res = self.gpg.delete_keys(elem)
 
-			elif res == "No such key":
-				print(" NO SUCH KEY")
+			# elif res == "No such key":
+			# 	print(" NO SUCH KEY")
 
 		return True
 
