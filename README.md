@@ -22,7 +22,7 @@ sudo chmod +x run.py
 ```
 ![sym](https://user-images.githubusercontent.com/64653975/123689517-99412280-d853-11eb-8e60-0d8ffca72c2c.gif)
 
-## asymetric enctyption
+## asymmetric enctyption
 ```
 if keys are already loaded
 ./run.py -f <encrypted file>
