@@ -79,9 +79,7 @@ class Shelter(object):
 
 
 	def saveFile(self):
-		"saving encrypted file"
-		print("save fileee")
-		
+		"saving encrypted file"		
 		if var.FILE.startswith("http"):
 			print("cannot save in http mode")
 			self.failureExit("cannot save in http source mode")
@@ -92,7 +90,8 @@ class Shelter(object):
 			self.saveSSH()
 			return 
 
-		with open(var.FILE, "wb") as f:
+		with open(var.FILE, "w") as f:
+			var.CONTENT = str(var.CONTENT)
 			f.write(var.CONTENT)
 
 

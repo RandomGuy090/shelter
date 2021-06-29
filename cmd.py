@@ -127,11 +127,26 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 	def printHelp(self):
 		"help printout"
 		print(""" ./shelter.py <options>
-		   -f --file 		file location
-		   -r --recipient	recipient       
-		   -s --secret		import secret key
-		   -p --public		import public key
-				""")
+	   -f --file 		file location
+	   -r --recipient	recipient       
+	   -s --secret		import secret key
+	   -p --public		import public key
+	   -P --port 		ssh server port
+
+	   e.g.
+	   with ssh server
+	   ./run.py -f <user>@<ip>:<path/to/file> -P <port> 
+	   with http server
+	   ./run.py -f <http://path/to/file> 
+
+	   import keys
+	   ./run.py -f <path> -p <path/to/pubkey> -s <path/to/prv/key>
+	
+		change recipient (after commited changes)
+	   
+	   ./run.py -f <path> -r <email>
+
+		""")
 
 
 
