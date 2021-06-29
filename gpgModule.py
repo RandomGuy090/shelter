@@ -12,6 +12,7 @@ class GpgHandler(object):
 		except:
 			print("GPG homedir error")
 
+
 	def decrypt(self, file):
 
 		data = self.gpg.decrypt(file)
@@ -43,7 +44,6 @@ class GpgHandler(object):
 			print("error")
 
 	def encrypt_ASYM(self, content, file):
-
 		if var.RECIP_FLAG == "self":
 			fprit = self.getFingerpritMenu(var.RECIP)
 		elif var.RECIP != var.RECIP_FLAG:

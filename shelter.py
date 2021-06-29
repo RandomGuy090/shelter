@@ -67,15 +67,17 @@ class Shelter(object):
 	
 	def encrypt(self, content)->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
-		if var.FILE.startswith("http"):
-			print("cannot save in http mode")
-			self.failureExit("cannot save in http source mode")
-			#extend here with prompt asking for new file location
 		
 		tmp = self.parseJSON(content)
 		if var.LAST_READ == var.FIRST_READ:
 			print("exit, no save")
 			return
+		
+		if var.FILE.startswith("http"):
+			print("cannot save in http mode")
+			self.failureExit("cannot save in http source mode")
+			#extend here with prompt asking for new file location
+		
 		if var.RECIP == "" and var.RECIP_FLAG == "":
 			tmp = GpgHandler().encryptSYM(tmp, var.FILE)
 		else:
