@@ -50,6 +50,7 @@ class Shelter(object):
 		return txt	
 
 	def readFile(self):
+		"read file"
 		with open(var.FILE, "rt") as f:
 			content = f.read()
 			return content
@@ -69,23 +70,34 @@ class Shelter(object):
 		"encrypts file"
 		
 		tmp = self.parseJSON(content)
-		if var.LAST_READ == var.FIRST_READ:
-			print("exit, no save")
-			return
+		
+		
+		if var.RECIP == "" and var.RECIP_FLAG == "":
+			GpgHandler().encryptSYM(tmp)
+		else:
+			GpgHandler().encrypt_ASYM(tmp)
+
+
+	def saveFile(self):
+		"saving encrypted file"
+		print("save fileee")
 		
 		if var.FILE.startswith("http"):
 			print("cannot save in http mode")
 			self.failureExit("cannot save in http source mode")
 			#extend here with prompt asking for new file location
-		
-		if var.RECIP == "" and var.RECIP_FLAG == "":
-			tmp = GpgHandler().encryptSYM(tmp, var.FILE)
-		else:
-			tmp = GpgHandler().encrypt_ASYM(tmp, var.FILE)
+			return 
 
-		return tmp
+		if "@" in var.FILE:
+			self.saveSSH()
+			return 
+
+		with open(var.FILE, "wb") as f:
+			f.write(var.CONTENT)
+
 
 	def import_key(self, file):
+		"import keys from flags"
 		res = GpgHandler().import_key(file)
 		if "error" not in res:
 			var.DEL_KEYS.append(res)

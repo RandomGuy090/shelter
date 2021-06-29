@@ -23,12 +23,11 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 	def exitFuntion(self):
 		"run as last, closes everything"
 		var.LAST_READ = self.switch("cd")[0]
+		if not var.LAST_READ == var.FIRST_READ:
+			self.encrypt(var.PATHDIR)
+			self.saveFile()
 
-		self.encrypt(var.PATHDIR)
-		
 		self.delete_keys()
-
-
 
 	def printOut(self)-> list:
 		"returns list of 1 normal elements 2 colored elements"
@@ -40,7 +39,7 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 			var.COMMANDS.append(elem)
 			elem = self.checkType(elem, data)
 			ret.append(elem)			
-			# print(elem)		
+	
 		return data, ret
 
 	def changeColor(self, txt:str, code:"[escCde, style, txtCol, bgcol]")-> str:
@@ -59,8 +58,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 		"converts [path][to] to path/to"
 		path = path[2:-2]
 		path = path.replace("']['", "/")
-
 		font = [ "1", "34", "49"]
+
 		path = self.changeColor(path, ["\x1b[",font[0] ,font[1],font[2]])
 		return path
 
@@ -90,9 +89,9 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 		elif "@" in var.FILE:
 			"if ssh address is given in the -f flag"
 			user, adr = var.FILE.split("@") 
-			adr, path = adr.split(":")
+			adr, var.SSHPATH = adr.split(":")
 			var.FILE = f"{user}@{adr} -p {var.SSHPORT}"
-			var.CONTENT = self.getSSH(path)
+			var.CONTENT = self.getSSH()
 
 		else:
 			var.CONTENT = self.readFile()

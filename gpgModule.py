@@ -35,15 +35,15 @@ class GpgHandler(object):
 		return data
 
 
-	def encryptSYM(self, content, file):
+	def encryptSYM(self, content):
 		data = self.gpg.encrypt(content, None, symmetric=True)
 		if data.ok:
-			with open(file, "wb") as f:
-				f.write(data.data)
+			var.CONTENT = data
+			return data
 		else:
 			print("error")
 
-	def encrypt_ASYM(self, content, file):
+	def encrypt_ASYM(self, content):
 		if var.RECIP_FLAG == "self":
 			fprit = self.getFingerpritMenu(var.RECIP)
 		elif var.RECIP != var.RECIP_FLAG:
@@ -55,13 +55,12 @@ class GpgHandler(object):
 			
 		data = self.gpg.encrypt(content, fprit, always_trust=True)
 		if data.ok:
-			with open(file, "wb") as f:
-				f.write(data.data)
+			var.CONTENT = data
+			return data
 		else:
 			pass
 
 	def getMail(self, str):
-
 		try:
 			str = str.rsplit(" ")[1][1:-1]
 			return str
