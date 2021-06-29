@@ -13,6 +13,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 
 	def __init__(self, data="not used"):
 		self.flags()
+		self.processFileName()
+
 		atexit.register(self.exitFuntion)
 		super().__init__(var.FILE)
 		self.data = var.PATHDIR
@@ -80,13 +82,17 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
 
 
-	def processFileName(self, file):
-		if file.startswith("http"):
-			var.CONTENT = self.getHttp(file)
+	def processFileName(self):
+		if var.FILE.startswith("http"):
+			"if http address is given in the -f flag"
+			var.CONTENT = self.getHttp()
 
-		elif file.startswith("tcp"):
-			print("tcp source")
-			#connect here with ssh server and get file
+		elif "@" in var.FILE:
+			"if ssh address is given in the -f flag"
+			user, adr = var.FILE.split("@") 
+			adr, path = adr.split(":")
+			var.FILE = f"{user}@{adr} -p {var.SSHPORT}"
+			var.CONTENT = self.getSSH(path)
 
 		else:
 			var.CONTENT = self.readFile()
@@ -95,13 +101,12 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:",["file=","recip=", "help=", \
-								"public=", "secret="])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:P:",["file=","recip=", "help=", \
+								"public=", "secret=","port"])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
 					var.FILE = arg
-					self.processFileName(arg)
 					# var.FILE = arg
 				elif opt in ('-r', '--recip'):
 					var.RECIP_FLAG = arg
@@ -109,6 +114,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 					var.PRIV_KEY = arg
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
+				elif opt in ("-P", "--port"):
+					var.SSHPORT = arg
 
 				elif opt in ("-h", "--help"):
 					self.printHelp()

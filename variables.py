@@ -14,6 +14,8 @@ PRIV_KEY = None
 PUBLIC_KEY = None
 ONLINE = None
 CONTENT = None
+SSHPORT = 22
+
 #commands
 EXT_KWORDS = ["q","exit","quit"]
 LS_KWORDS = ["ls", "list"]
