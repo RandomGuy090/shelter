@@ -88,9 +88,11 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 
 		elif "@" in var.FILE:
 			"if ssh address is given in the -f flag"
-			user, adr = var.FILE.split("@") 
-			adr, var.SSHPATH = adr.split(":")
-			var.FILE = f"{user}@{adr} -p {var.SSHPORT}"
+			var.SSHUSER, adr = var.FILE.split("@") 
+			var.SSHADDR, var.SSHPATH = adr.split(":")
+			
+			# var.FILE = f"{user}@{adr} -p {var.SSHPORT}"
+
 			var.CONTENT = self.getSSH()
 
 		else:
