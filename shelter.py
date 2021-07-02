@@ -8,9 +8,6 @@ class Shelter(object):
 	buffer = None
 	
 	def __init__(self, path:str):
-		# if not os.path.isfile(path):
-		# 	self.failureExit("bad input file")
-
 		if var.PRIV_KEY:
 			if self.import_key(var.PRIV_KEY) != "ok":
 				self.failureExit("importing key error")

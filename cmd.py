@@ -90,9 +90,6 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 			"if ssh address is given in the -f flag"
 			var.SSHUSER, adr = var.FILE.split("@") 
 			var.SSHADDR, var.SSHPATH = adr.split(":")
-			
-			# var.FILE = f"{user}@{adr} -p {var.SSHPORT}"
-
 			var.CONTENT = self.getSSH()
 
 		else:

@@ -13,15 +13,12 @@ class Filesource(object):
 	
 	def getSSH(self):
 		"get file from ssh server"
-		# val = os.popen(f"ssh {var.FILE} 'cat {var.SSHPATH}'").read()
-		# return val
 		return self.sshPipe(f"cat {var.SSHPATH}")
 
 
 	def saveSSH(self):
 		"save file from ssh server"
 		com = f"echo '{var.CONTENT}' > {var.SSHPATH}"
-
 		self.sshPipe(com)
 	
 	def sshPipe(selfm, command):
@@ -39,6 +36,4 @@ class Filesource(object):
 		client.close()
 		return str
 
-	def test(self):
-		print("test")
 
