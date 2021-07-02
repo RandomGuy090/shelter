@@ -29,7 +29,6 @@ class GpgHandler(object):
 						var.RECIP  = self.getMail(mail)
 			print(f"unencrypted with: {var.RECIP}")
 
-
 		data = str(data)
 
 		return data
@@ -135,8 +134,6 @@ class GpgHandler(object):
 
 				res = self.gpg.delete_keys(elem)
 
-			# elif res == "No such key":
-			# 	print(" NO SUCH KEY")
 
 		return True
 

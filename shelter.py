@@ -16,11 +16,10 @@ class Shelter(object):
 			if self.import_key(var.PUBLIC_KEY) != "ok":
 				self.failureExit("importing key error")
 		
-		var.PATHDIR = self.decrypt()
-
-		
+		self.decrypt()
+				
 	def failureExit(self, command="")->None:
-		print(f"GPG init file error  {command}")
+		print(f"shelter error  {command}")
 		sys.exit(1)
 
 	def returnFalse(self):
@@ -57,18 +56,17 @@ class Shelter(object):
 
 		tmp = GpgHandler().decrypt(var.CONTENT)
 		if not tmp:
+			print("FILE BROKEN")
 			self.failureExit("file not decrypted")
 		tmp = self.parseJSON(tmp)
 
 		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
-		return tmp
+		var.PATHDIR = tmp
 	
 	def encrypt(self, content)->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
 		
 		tmp = self.parseJSON(content)
-		
-		
 		if var.RECIP == "" and var.RECIP_FLAG == "":
 			GpgHandler().encryptSYM(tmp)
 		else:

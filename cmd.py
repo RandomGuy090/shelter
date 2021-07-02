@@ -22,7 +22,11 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 
 	def exitFuntion(self):
 		"run as last, closes everything"
-		var.LAST_READ = self.switch("cd")[0]
+		try:
+			var.LAST_READ = self.switch("cd")[0]
+		except:
+			print(f"File -- {var.FILE} -- has no content, \nclosing....")
+			return
 		if not var.LAST_READ == var.FIRST_READ:
 			self.encrypt(var.PATHDIR)
 			self.saveFile()
