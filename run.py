@@ -9,6 +9,7 @@ from autocomp import Completer
 import variables as var
 
 
+
 def show():
 	"printouts elements from passed list"
 	ls = cmd.printOut()[1]
@@ -16,6 +17,8 @@ def show():
 		print(elem)
 
 if __name__ == "__main__":
+
+	
 
 	cmd = Cmd()
 

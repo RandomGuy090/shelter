@@ -1,5 +1,5 @@
 # FILE = "/home/randomguy90/PROGRAM/Python/shelter/passJson.txt"
-FILE = "/home/randomguy90/PROGRAM/Python/shelter/encrypted.gpg"
+FILE = ""
 
 #used by script
 PATH = ""

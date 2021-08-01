@@ -2,6 +2,8 @@ from shelter import Shelter
 from switch import Switch
 from generator import Generator
 from filesource import Filesource
+from config import Config
+
 
 import variables as var
 
@@ -13,6 +15,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 
 	def __init__(self, data="not used"):
 		self.flags()
+
+		Config()
 		self.processFileName()
 
 		atexit.register(self.exitFuntion)
@@ -83,6 +87,7 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 		font = [ "1", "31", "49"]
 		info = "--> password copied <--"
 		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
+		print(info)
 
 
 	def processFileName(self):
@@ -103,8 +108,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:P:",["file=","recip=", "help=", \
-								"public=", "secret=","port"])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:P:c:",["file=","recip=", "help=", \
+								"public=", "secret=","port", "config"])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
@@ -117,6 +122,8 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
 				elif opt in ("-P", "--port"):
+					var.SSHPORT = arg
+				elif opt in ("-c", "--config"):
 					var.SSHPORT = arg
 
 				elif opt in ("-h", "--help"):
