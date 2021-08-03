@@ -130,6 +130,11 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 					self.printHelp()
 					sys.exit(0)
 
+			if "ssh" in argv:
+				print("ssh in args, connecting default ssh server")
+				var.runSSH = True
+
+
 		except getopt.GetoptError as e:
 			self.printHelp()
 			sys.exit(0)

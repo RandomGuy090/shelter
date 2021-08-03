@@ -16,6 +16,8 @@ ONLINE = None
 CONTENT = None
 SSHPORT = 22
 SSHADDR = ""
+SSHUSER = ""
+runSSH = None
 
 #commands
 EXT_KWORDS = ["q","exit","quit"]

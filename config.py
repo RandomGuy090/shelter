@@ -1,4 +1,4 @@
-import configparser, os
+import configparser, os, sys
 import variables as var
 
 login = os.getlogin()
@@ -12,6 +12,7 @@ File_location =
 GPGHOMEDIR = /home/{login}/
 SSH_port = 
 SSH_addr = 
+SSH_user = 
 PRIV_KEY = 
 PUBLIC_KEY = 
 
@@ -32,12 +33,12 @@ class Config(object):
 				print("create: ")
 				print(config_files[0])
 				try:
-
 					os.makedirs(os.path.dirname(config_files[0]), exist_ok=True)
 					f = open(config_files[0], 'w+')
 					f.write(config_template)
 				except:
 					print("error creating")
+				sys.exit(0)
 
 			self.load()
 
@@ -45,25 +46,35 @@ class Config(object):
 	def load(self):
 		c = configparser.ConfigParser()
 		c.read_string(self.config)
-		
-		if var.FILE == "":
-			var.FILE = c["DEFAULT"]["File_location"]
 
-		if var.GPGHOMEDIR == "":
-			var.GPGHOMEDIR = c["DEFAULT"]["GPGHOMEDIR"]
+		config_defaults = {
+		"var.FILE": "File_location",
+		"var.SSHPORT": "GPGHOMEDIR",
+		"var.SSHPORT": "SSH_port",
+		"var.SSHADDR": "SSH_addr",
+		"var.SSHUSER": "SSH_user",
+		"var.PRIV_KEY": "PRIV_KEY",
+		"var.PUBLIC_KEY": "PUBLIC_KEY"
+		}
 
-		if var.SSHPORT == "":
-			var.SSHPORT = c["DEFAULT"]["SSH_port"]
-			
-		if var.SSHADDR == "":
-			var.SSHADDR = c["DEFAULT"]["SSH_addr"]
+	
+		for elem in config_defaults:
+			s = c['DEFAULT'][config_defaults[elem]]
+			exec(f"{elem} = '{s}'")
 
-		if var.PRIV_KEY == "":
-			var.PRIV_KEY = c["DEFAULT"]["PRIV_KEY"]
 
-		if var.PUBLIC_KEY == "":
-			var.PUBLIC_KEY = c["DEFAULT"]["PUBLIC_KEY"]
-		
+		if var.runSSH:
+			impor = {"var.SSHUSER": var.SSHUSER,
+					"var.SSHUSER": var.SSHUSER,
+					"var.FILE": var.FILE
+					}
+			for elem in impor:
+				if impor[elem] == "":
+					print(f"{config_defaults[elem]} is empty, check config file")
+					sys.exit(0)
+
+			var.FILE = f"{var.SSHUSER}@{var.SSHADDR}:{var.FILE}"
+			print(var.FILE)
 
 
 
