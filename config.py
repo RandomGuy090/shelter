@@ -66,7 +66,8 @@ class Config(object):
 		if var.runSSH:
 			impor = {"var.SSHUSER": var.SSHUSER,
 					"var.SSHUSER": var.SSHUSER,
-					"var.FILE": var.FILE
+					"var.FILE": var.FILE,
+					"var.SSHPORT": var.SSHPORT,
 					}
 			for elem in impor:
 				if impor[elem] == "":
