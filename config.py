@@ -15,7 +15,6 @@ SSH_addr =
 PRIV_KEY = 
 PUBLIC_KEY = 
 
-
 '''
 
 class Config(object):
@@ -46,11 +45,25 @@ class Config(object):
 	def load(self):
 		c = configparser.ConfigParser()
 		c.read_string(self.config)
-		var.FILE = c["DEFAULT"]["File_location"]
-		var.GPGHOMEDIR = c["DEFAULT"]["GPGHOMEDIR"]
-		var.SSHPORT = c["DEFAULT"]["SSH_port"]
-		var.SSHADDR = c["DEFAULT"]["SSH_addr"]
-		var.PRIV_KEY = c["DEFAULT"]["PRIV_KEY"]
-		var.PUBLIC_KEY = c["DEFAULT"]["PUBLIC_KEY"]
+		
+		if var.FILE == "":
+			var.FILE = c["DEFAULT"]["File_location"]
+
+		if var.GPGHOMEDIR == "":
+			var.GPGHOMEDIR = c["DEFAULT"]["GPGHOMEDIR"]
+
+		if var.SSHPORT == "":
+			var.SSHPORT = c["DEFAULT"]["SSH_port"]
+			
+		if var.SSHADDR == "":
+			var.SSHADDR = c["DEFAULT"]["SSH_addr"]
+
+		if var.PRIV_KEY == "":
+			var.PRIV_KEY = c["DEFAULT"]["PRIV_KEY"]
+
+		if var.PUBLIC_KEY == "":
+			var.PUBLIC_KEY = c["DEFAULT"]["PUBLIC_KEY"]
+		
+
 
 
