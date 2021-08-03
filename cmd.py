@@ -14,8 +14,8 @@ import atexit, getopt, sys
 class Cmd(Shelter, Switch, Generator, Filesource):
 
 	def __init__(self, data="not used"):
-		self.flags()
 
+		self.flags()
 		Config()
 		self.processFileName()
 
