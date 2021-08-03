@@ -151,6 +151,10 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 	   e.g.
 	   with ssh server
 	   ./run.py -f <user>@<ip>:<path/to/file> -P <port> 
+	   or 
+	   ./run.py ssh
+	   if important variables are defined in config file 
+
 	   with http server
 	   ./run.py -f <http://path/to/file> 
 
