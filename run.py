@@ -12,7 +12,7 @@ import variables as var
 
 def show():
 	"printouts elements from passed list"
-	ls = cmd.printOut()[1]
+	ls = cmd.print_out()[1]
 	for elem in ls:
 		print(elem)
 
@@ -24,8 +24,8 @@ if __name__ == "__main__":
 
 	while True:
 		show()
-		path = cmd.convToPath(var.PATH)
-		prompt = cmd.promptColor("shelter>")
+		path = cmd.conv_to_path(var.PATH)
+		prompt = cmd.prompt_color("shelter>")
 		
 		if len(var.PATH) >1:
 			read = input(f"{prompt}{path}>")

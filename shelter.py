@@ -1,4 +1,4 @@
-from gpgModule import GpgHandler
+from gpgModule import Gpg_handler
 import gnupg, json, copy, sys, os
 import variables as var
 
@@ -10,42 +10,42 @@ class Shelter(object):
 	def __init__(self, path:str):
 		if var.PRIV_KEY:
 			if self.import_key(var.PRIV_KEY) != "ok":
-				self.failureExit("importing key error")
+				self.failure_exit("importing key error")
 
 		if var.PUBLIC_KEY:
 			if self.import_key(var.PUBLIC_KEY) != "ok":
-				self.failureExit("importing key error")
+				self.failure_exit("importing key error")
 		
 		self.decrypt()
 				
-	def failureExit(self, command="")->None:
+	def failure_exit(self, command="")->None:
 		print(f"shelter error  {command}")
 		sys.exit(1)
 
-	def returnFalse(self):
+	def return_false(self):
 		return False
 
-	def parseJSON(self, txt:str)->"str/dict":
+	def parse_json(self, txt:str)->"str/dict":
 		"parse to/from json"
 		if txt == "":
-			self.failureExit("decoding error")
+			self.failure_exit("decoding error")
 		if isinstance(txt, dict):
 			return json.dumps(txt)
 		else:
 			return json.loads(txt)
 
-	def checkType(self, txt:str, elem:str)->str:
+	def check_type(self, txt:str, elem:str)->str:
 		"checks type of element and colors it"
 		font1 = [ "1", "34", "49"]
 		font2 = [ "1", "33", "49"]
 		if isinstance(elem[txt], dict):
-			txt = self.changeColor(txt, ["\x1b[",font1[0] ,font1[1],font1[2]])
+			txt = self.change_color(txt, ["\x1b[",font1[0] ,font1[1],font1[2]])
 
 		elif isinstance(elem[txt], str):
-			txt = self.changeColor(txt, ["\x1b[", font2[0], font2[1], font2[2]])		
+			txt = self.change_color(txt, ["\x1b[", font2[0], font2[1], font2[2]])		
 		return txt	
 
-	def readFile(self):
+	def read_file(self):
 		"read file"
 		with open(var.FILE, "rt") as f:
 			content = f.read()
@@ -54,11 +54,11 @@ class Shelter(object):
 	def decrypt(self)->str:		#prepare and call gpg handler to decrypt
 		"decrypts file"			
 
-		tmp = GpgHandler().decrypt(var.CONTENT)
+		tmp = Gpg_handler().decrypt(var.CONTENT)
 		if not tmp:
-			print("FILE BROKEN")
-			self.failureExit("file not decrypted")
-		tmp = self.parseJSON(tmp)
+			print("File broken")
+			self.failure_exit("file not decrypted")
+		tmp = self.parse_json(tmp)
 
 		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
 		var.PATHDIR = tmp
@@ -66,23 +66,23 @@ class Shelter(object):
 	def encrypt(self, content)->str:		#prepare and call gpg handler to decrypt
 		"encrypts file"
 		
-		tmp = self.parseJSON(content)
+		tmp = self.parse_json(content)
 		if var.RECIP == "" and var.RECIP_FLAG == "":
-			GpgHandler().encryptSYM(tmp)
+			Gpg_handler().encrypt_sym(tmp)
 		else:
-			GpgHandler().encrypt_ASYM(tmp)
+			Gpg_handler().encrypt_asym(tmp)
 
 
-	def saveFile(self):
+	def save_file(self):
 		"saving encrypted file"		
 		if var.FILE.startswith("http"):
 			print("cannot save in http mode")
-			self.failureExit("cannot save in http source mode")
+			self.failure_exit("cannot save in http source mode")
 			#extend here with prompt asking for new file location
 			return 
 
 		if "@" in var.FILE:
-			self.saveSSH()
+			self.save_ssh()
 			return 
 
 		with open(var.FILE, "w") as f:
@@ -92,7 +92,7 @@ class Shelter(object):
 
 	def import_key(self, file):
 		"import keys from flags"
-		res = GpgHandler().import_key(file)
+		res = Gpg_handler().import_key(file)
 		if "error" not in res:
 			var.DEL_KEYS.append(res)
 			return "ok"
@@ -100,5 +100,5 @@ class Shelter(object):
 			return "error"
 	
 	def delete_keys(self):
-		return GpgHandler().delete_keys()
+		return Gpg_handler().delete_keys()
 

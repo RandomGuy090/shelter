@@ -1,7 +1,7 @@
 import gnupg, os
 import variables as var
 
-class GpgHandler(object):
+class Gpg_handler(object):
 
 	def __init__(self, gpghome=None):
 		if gpghome == None:
@@ -14,7 +14,6 @@ class GpgHandler(object):
 
 
 	def decrypt(self, file):
-
 		data = self.gpg.decrypt(file)
 		
 		if not data.ok:
@@ -26,7 +25,7 @@ class GpgHandler(object):
 				if data.key_id in key["subkeys"][0]:
 					mail = key["uids"][0]
 					if var.RECIP != mail:
-						var.RECIP  = self.getMail(mail)
+						var.RECIP  = self.get_mail(mail)
 			print(f"unencrypted with: {var.RECIP}")
 
 		data = str(data)
@@ -34,7 +33,7 @@ class GpgHandler(object):
 		return data
 
 
-	def encryptSYM(self, content):
+	def encrypt_sym(self, content):
 		data = self.gpg.encrypt(content, None, symmetric=True)
 		if data.ok:
 			var.CONTENT = data
@@ -42,15 +41,15 @@ class GpgHandler(object):
 		else:
 			print("error")
 
-	def encrypt_ASYM(self, content):
+	def encrypt_asym(self, content):
 		if var.RECIP_FLAG == "self":
-			fprit = self.getFingerpritMenu(var.RECIP)
+			fprit = self.get_fingerprit_menu(var.RECIP)
 		elif var.RECIP != var.RECIP_FLAG:
-			fprit = self.getFingerpritMenu(var.RECIP_FLAG)
+			fprit = self.get_fingerprit_menu(var.RECIP_FLAG)
 		elif var.RECIP == var.RECIP_FLAG:
-			fprit = self.getFingerpritMenu(var.RECIP)
+			fprit = self.get_fingerprit_menu(var.RECIP)
 		else:
-			fprit = self.getFingerpritMenu()		
+			fprit = self.get_fingerprit_menu()		
 			
 		data = self.gpg.encrypt(content, fprit, always_trust=True)
 		if data.ok:
@@ -59,16 +58,16 @@ class GpgHandler(object):
 		else:
 			pass
 
-	def getMail(self, str):
+	def get_mail(self, str):
 		try:
 			str = str.rsplit(" ")[1][1:-1]
 			return str
 		except:
 			pass
 
-	def getFingerpritMenu(self, mail=""):
+	def get_fingerprit_menu(self, mail=""):
 		if mail == "":
-			mail = self.getMail(mail)
+			mail = self.get_mail(mail)
 			keys = self.gpg.list_keys()
 			klist = list()
 			for key in keys:
@@ -84,21 +83,21 @@ class GpgHandler(object):
 					if tmp == "":
 						mail = var.RECIP
 						break
-					if self.findInArray(klist, tmp):
+					if self.find_in_array(klist, tmp):
 						mail = tmp
 						break
 					
-		fprit = self.getKeyBymail(mail)
+		fprit = self.get_key_bymail(mail)
 		return fprit
 
-	def findInArray(self, arr, str):
+	def find_in_array(self, arr, str):
 		for elem in arr:
 			if elem.find(str):
 				return True
 				break
 
 
-	def getKeyBymail(self, mail):
+	def get_key_bymail(self, mail):
 		keys = self.gpg.list_keys()
 
 		mail = mail.split(" ")[0]
@@ -113,9 +112,9 @@ class GpgHandler(object):
 			with open(file, "rt") as f:
 				key = f.read()
 		except:
-			return "File error"
+			return "_file error"
 
-		res = self.gpg.import_keys(key, passphrase="ASDwer4852")
+		res = self.gpg.import_keys(key, passphrase="_asdwer4852")
 
 		if res.count == 0 :
 			return "import key error"
@@ -126,7 +125,7 @@ class GpgHandler(object):
 		for elem in var.DEL_KEYS:
 			res = self.gpg.delete_keys(elem).status
 
-			if res in "Must delete secret key first":
+			if res in "_must delete secret key first":
 				res = self.gpg.delete_keys(elem, True, passphrase="")
 				while res.status != "ok":
 					passwd = input("input password of secret key: ")

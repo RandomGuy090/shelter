@@ -1,7 +1,7 @@
 from shelter import Shelter
 from switch import Switch
 from generator import Generator
-from filesource import Filesource
+from filesource import File_source
 from config import Config
 
 
@@ -11,33 +11,34 @@ import pyperclip
 import atexit, getopt, sys
 
 
-class Cmd(Shelter, Switch, Generator, Filesource):
+class Cmd(Shelter, Switch, Generator, File_source):
 
 	def __init__(self, data="not used"):
 
 		self.flags()
 		Config()
-		self.processFileName()
+		self.process_file_name()
 
-		atexit.register(self.exitFuntion)
+		atexit.register(self.exit_funtion)
 		super().__init__(var.FILE)
+
 		self.data = var.PATHDIR
 		
 
-	def exitFuntion(self):
+	def exit_funtion(self):
 		"run as last, closes everything"
 		try:
 			var.LAST_READ = self.switch("cd")[0]
 		except:
-			print(f"File -- {var.FILE} -- has no content, \nclosing....")
+			print(f"_file -- {var.FILE} -- has no content, \nclosing....")
 			return
 		if not var.LAST_READ == var.FIRST_READ:
 			self.encrypt(var.PATHDIR)
-			self.saveFile()
+			self.save_file()
 
 		self.delete_keys()
 
-	def printOut(self)-> list:
+	def print_out(self)-> list:
 		"returns list of 1 normal elements 2 colored elements"
 		data = var.PATHDIR
 		var.COMMANDS = []
@@ -45,33 +46,33 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 
 		for elem in data:	
 			var.COMMANDS.append(elem)
-			elem = self.checkType(elem, data)
+			elem = self.check_type(elem, data)
 			ret.append(elem)			
 	
 		return data, ret
 
-	def changeColor(self, txt:str, code:"[escCde, style, txtCol, bgcol]")-> str:
+	def change_color(self, txt:str, code:"[esc_cde, style, txt_col, bgcol]")-> str:
 		"changes color"
 		header = f"{code[0]}{code[1]};{code[2]};{code[3]}m"
 		tail = "\033[0;0m"
 		return f"{header}{txt}{tail}"
 	
-	def notFound(self, command, arg="not found")-> None:
+	def not_found(self, command, arg="not found")-> None:
 		"shows error message"
 		header = f"\x1b[1;31m"
 		tail = "\033[0;0m"
-		print(f"{header} ERROR : '{command}' {arg}{tail}")
+		print(f"{header} Error : '{command}' {arg}{tail}")
 
-	def convToPath(self, path:str)->str:
+	def conv_to_path(self, path:str)->str:
 		"converts [path][to] to path/to"
 		path = path[2:-2]
 		path = path.replace("']['", "/")
 		font = [ "1", "34", "49"]
 
-		path = self.changeColor(path, ["\x1b[",font[0] ,font[1],font[2]])
+		path = self.change_color(path, ["\x1b[",font[0] ,font[1],font[2]])
 		return path
 
-	def promptColor(self, str:str)-> str:
+	def prompt_color(self, str:str)-> str:
 		"returns coloured prompt"
 		header = f"\x1b[1;32m"
 		tail = "\033[0;0m"
@@ -86,29 +87,30 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 		"show copied passwd info"
 		font = [ "1", "31", "49"]
 		info = "--> password copied <--"
-		info = self.changeColor(info, ["\x1b[",font[0] ,font[1],font[2]])
+		info = self.change_color(info, ["\x1b[",font[0] ,font[1],font[2]])
 		print(info)
 
 
-	def processFileName(self):
+	def process_file_name(self):
+		print(var.FILE)
 		if var.FILE.startswith("http"):
 			"if http address is given in the -f flag"
-			var.CONTENT = self.getHttp()
+			var.CONTENT = self.get_http()
 
 		elif "@" in var.FILE:
 			"if ssh address is given in the -f flag"
 			var.SSHUSER, adr = var.FILE.split("@") 
 			var.SSHADDR, var.SSHPATH = adr.split(":")
-			var.CONTENT = self.getSSH()
+			var.CONTENT = self.get_ssh()
 
 		else:
-			var.CONTENT = self.readFile()
+			var.CONTENT = self.read_file()
 
 	
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:P:c:",["file=","recip=", "help=", \
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:_p:c:",["file=","recip=", "help=", \
 								"public=", "secret=","port", "config"])
 
 			for opt, arg in options:
@@ -121,13 +123,13 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 					var.PRIV_KEY = arg
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
-				elif opt in ("-P", "--port"):
+				elif opt in ("-_p", "--port"):
 					var.SSHPORT = arg
 				elif opt in ("-c", "--config"):
-					var.SSHPORT = arg
+					print("CONFIG FILES")
 
 				elif opt in ("-h", "--help"):
-					self.printHelp()
+					self.print_help()
 					sys.exit(0)
 
 			if "ssh" in argv:
@@ -135,22 +137,22 @@ class Cmd(Shelter, Switch, Generator, Filesource):
 				var.runSSH = True
 
 
-		except getopt.GetoptError as e:
-			self.printHelp()
+		except getopt._getopt_error as e:
+			self.print_help()
 			sys.exit(0)
 	
-	def printHelp(self):
+	def print_help(self):
 		"help printout"
 		print(""" ./shelter.py <options>
 	   -f --file 		file location
 	   -r --recipient	recipient       
 	   -s --secret		import secret key
 	   -p --public		import public key
-	   -P --port 		ssh server port
+	   -_p --port 		ssh server port
 
 	   e.g.
 	   with ssh server
-	   ./run.py -f <user>@<ip>:<path/to/file> -P <port> 
+	   ./run.py -f <user>@<ip>:<path/to/file> -_p <port> 
 	   or 
 	   ./run.py ssh
 	   if important variables are defined in config file 

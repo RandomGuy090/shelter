@@ -6,13 +6,13 @@ class Completer(object):
 
 
     def complete_extra(self, args):
-        "Completions for the 'extra' command."
+        "_completions for the 'extra' command."
         if not args:
             return self._complete_path('.')
         return self._complete_path(args[-1])
 
     def complete(self, text, state):
-        "Generic readline completion entry point."
+        "_generic readline completion entry point."
         buffer = readline.get_line_buffer()
         line = readline.get_line_buffer().split()
         if not line:

@@ -10,9 +10,9 @@ config_template = f'''
 [DEFAULT]
 File_location = 
 GPGHOMEDIR = /home/{login}/
-SSH_port = 
-SSH_addr = 
-SSH_user = 
+SSH_port =  22
+SSH_addr = 10.0.0.2
+SSH_user = pi
 PRIV_KEY = 
 PUBLIC_KEY = 
 
@@ -49,7 +49,7 @@ class Config(object):
 
 		config_defaults = {
 		"var.FILE": "File_location",
-		"var.SSHPORT": "GPGHOMEDIR",
+		"var.GPGHOMEDIR": "GPGHOMEDIR",
 		"var.SSHPORT": "SSH_port",
 		"var.SSHADDR": "SSH_addr",
 		"var.SSHUSER": "SSH_user",
@@ -65,7 +65,6 @@ class Config(object):
 
 		if var.runSSH:
 			impor = {"var.SSHUSER": var.SSHUSER,
-					"var.SSHUSER": var.SSHUSER,
 					"var.FILE": var.FILE,
 					"var.SSHPORT": var.SSHPORT,
 					}
@@ -75,7 +74,7 @@ class Config(object):
 					sys.exit(0)
 
 			var.FILE = f"{var.SSHUSER}@{var.SSHADDR}:{var.FILE}"
-			print(var.FILE)
+			
 
 
 

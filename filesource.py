@@ -2,34 +2,35 @@ import requests
 import os, time
 from paramiko import SSHClient, AutoAddPolicy
 
+
 import variables as var
 
-class Filesource(object):
+class File_source(object):
 
-	def getHttp(self, path):
+	def get_http(self, path):
 		"get file from http site"
 		tmp = requests.get(var.FILE).text
 		return tmp
 	
-	def getSSH(self):
+	def get_ssh(self):
 		"get file from ssh server"
-		return self.sshPipe(f"cat {var.SSHPATH}")
+
+		return self.ssh_pipe(f"cat {var.SSHPATH}")
 
 
-	def saveSSH(self):
+	def save_ssh(self):
 		"save file from ssh server"
 		com = f"echo '{var.CONTENT}' > {var.SSHPATH}"
-		self.sshPipe(com)
+		self.ssh_pipe(com)
 	
-	def sshPipe(selfm, command):
+	def ssh_pipe(selfm, command):
 		"function creating and closing ssh pipe"
+
 		client = SSHClient()
 		client.load_system_host_keys()
 		client.set_missing_host_key_policy(AutoAddPolicy())
-
 		client.connect(var.SSHADDR, username=var.SSHUSER, port=var.SSHPORT)
 		stdin, stdout, stderr = client.exec_command(command)
-
 		str = ""
 		for line in stdout:
 		    str += line
