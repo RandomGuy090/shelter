@@ -2,7 +2,7 @@ import variables as var
 import sys
 from re import sub
 
-class Switch():
+class Switch(object):
 
 	def switch(self, read:str):
 		read = read.rsplit(" ")

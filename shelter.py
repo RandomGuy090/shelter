@@ -2,9 +2,12 @@ from gpgModule import Gpg_handler
 import gnupg, json, copy, sys, os
 import variables as var
 
+from import_csv import import_csv as csv
 
 
-class Shelter(object):
+
+
+class Shelter(csv):
 	buffer = None
 	
 	def __init__(self, path:str):
@@ -16,7 +19,8 @@ class Shelter(object):
 			if self.import_key(var.PUBLIC_KEY) != "ok":
 				self.failure_exit("importing key error")
 		
-		self.decrypt()
+		if not var.PATHDIR: 
+			self.decrypt()
 				
 	def failure_exit(self, command="")->None:
 		print(f"shelter error  {command}")
@@ -101,4 +105,12 @@ class Shelter(object):
 	
 	def delete_keys(self):
 		return Gpg_handler().delete_keys()
+
+	def csv(self):
+		tmp = self.import_from_csv()
+		# tmp = self.parse_json(tmp)
+		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
+		var.PATHDIR = dict(tmp)
+		# print(var.PATHDIR)
+
 

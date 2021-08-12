@@ -4,7 +4,6 @@ from generator import Generator
 from filesource import File_source
 from config import Config
 
-
 import variables as var
 
 import pyperclip
@@ -17,7 +16,9 @@ class Cmd(Shelter, Switch, Generator, File_source):
 
 		self.flags()
 		Config()
-		self.process_file_name()
+		if not var.PATHDIR:
+			self.process_file_name()
+
 
 		atexit.register(self.exit_funtion)
 		super().__init__(var.FILE)
@@ -32,7 +33,9 @@ class Cmd(Shelter, Switch, Generator, File_source):
 		except:
 			print(f"_file -- {var.FILE} -- has no content, \nclosing....")
 			return
-		if not var.LAST_READ == var.FIRST_READ:
+		if not var.LAST_READ == var.FIRST_READ or var.IMPORT_FILE:
+			if var.FILE == "":
+				print("input file name")
 			self.encrypt(var.PATHDIR)
 			self.save_file()
 
@@ -110,8 +113,8 @@ class Cmd(Shelter, Switch, Generator, File_source):
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:_p:c:",["file=","recip=", "help=", \
-								"public=", "secret=","port", "config"])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:_p:c:i:",["file=","recip=", "help=", \
+								"public=", "secret=","port", "config", "import"])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
@@ -127,6 +130,12 @@ class Cmd(Shelter, Switch, Generator, File_source):
 					var.SSHPORT = arg
 				elif opt in ("-c", "--config"):
 					print("CONFIG FILES")
+				elif opt in ("-i", "--import"):
+					print("IMPORTING ")
+					var.IMPORT_FILE = arg
+					tmp = self.csv()
+					
+
 
 				elif opt in ("-h", "--help"):
 					self.print_help()
@@ -137,7 +146,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 				var.runSSH = True
 
 
-		except getopt._getopt_error as e:
+		except getopt.GetoptError as e:
 			self.print_help()
 			sys.exit(0)
 	

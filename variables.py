@@ -19,6 +19,8 @@ SSHADDR = ""
 SSHUSER = ""
 runSSH = None
 
+IMPORT_FILE = ""
+
 #commands
 EXT_KWORDS = ["q","exit","quit"]
 LS_KWORDS = ["ls", "list"]
