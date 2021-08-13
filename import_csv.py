@@ -12,12 +12,14 @@ class import_csv():
 		self.form_to_shelter()
 		# for elem in self.txt :
 		# 	print(f"{self.txt[elem]['login']}  {self.txt[elem]['password']}")
+		
 		return self.txt
 
 	def read(self):
 		with open(var.IMPORT_FILE, "rt" ) as f:
 			self.txt = f.read()
 			self.txt = self.txt.replace('"', "")
+			self.txt = self.txt.replace('https://', "")
 
 		return self.txt
 
@@ -40,7 +42,6 @@ class import_csv():
 	def form_to_shelter(self):
 		ret = dict()
 		for elem in self.txt:
-			print(elem)
 			try:
 				ret[elem["name"]] = {
 				"login": elem["username"],
@@ -51,6 +52,7 @@ class import_csv():
 				"login": elem["username"],
 				"password": elem["password"]
 				}
+
 		self.txt = ret
 		return ret
 
