@@ -11,9 +11,9 @@ config_template = f'''
 [DEFAULT]
 File_location = 
 GPGHOMEDIR = /home/{login}/
-SSH_port =  22
-SSH_addr = 10.0.0.2
-SSH_user = pi
+SSH_port = 
+SSH_addr = 
+SSH_user = 
 PRIV_KEY = 
 PUBLIC_KEY = 
 
