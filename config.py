@@ -59,8 +59,9 @@ class Config(object):
 
 	
 		for elem in config_defaults:
-			s = c['DEFAULT'][config_defaults[elem]]
-			exec(f"{elem} = '{s}'")
+			if eval(f" {elem} == '' "):
+				s = c['DEFAULT'][config_defaults[elem]]
+				res = exec(f"{elem} = '{s}'")
 
 
 		if var.runSSH:
@@ -72,6 +73,7 @@ class Config(object):
 				if impor[elem] == "":
 					print(f"{config_defaults[elem]} is empty, check config file")
 					sys.exit(0)
+
 
 			var.FILE = f"{var.SSHUSER}@{var.SSHADDR}:{var.FILE}"
 			
