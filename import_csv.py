@@ -12,7 +12,6 @@ class import_csv():
 		self.form_to_shelter()
 		# for elem in self.txt :
 		# 	print(f"{self.txt[elem]['login']}  {self.txt[elem]['password']}")
-		
 		return self.txt
 
 	def read(self):
@@ -27,6 +26,7 @@ class import_csv():
 		self.headers = self.txt[0].rsplit(",")
 		self.txt = self.txt[1:]
 
+
 	def change_to_dict(self):
 		ret = list()
 		for elem in self.txt:
@@ -40,13 +40,17 @@ class import_csv():
 	def form_to_shelter(self):
 		ret = dict()
 		for elem in self.txt:
+			print(elem)
 			try:
 				ret[elem["name"]] = {
 				"login": elem["username"],
 				"password": elem["password"]
 				}
 			except:
-				pass
+				ret[elem["url"]] = {
+				"login": elem["username"],
+				"password": elem["password"]
+				}
 		self.txt = ret
 		return ret
 

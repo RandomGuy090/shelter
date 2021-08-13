@@ -36,7 +36,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 		if not var.LAST_READ == var.FIRST_READ or var.IMPORT_FILE:
 			if var.FILE == "":
 				var.FILE = input(self.prompt_color("insert file name >: "))
-				
+
 			self.encrypt(var.PATHDIR)
 			self.save_file()
 
@@ -132,7 +132,6 @@ class Cmd(Shelter, Switch, Generator, File_source):
 				elif opt in ("-c", "--config"):
 					print("CONFIG FILES")
 				elif opt in ("-i", "--import"):
-					print("IMPORTING ")
 					var.IMPORT_FILE = arg
 					tmp = self.csv()
 					
