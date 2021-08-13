@@ -130,7 +130,8 @@ class Cmd(Shelter, Switch, Generator, File_source):
 				elif opt in ("-_p", "--port"):
 					var.SSHPORT = arg
 				elif opt in ("-c", "--config"):
-					print("CONFIG FILES")
+					print(f"config file {arg}")
+					var.CONFIG_FILES.append(arg)
 				elif opt in ("-i", "--import"):
 					var.IMPORT_FILE = arg
 					tmp = self.csv()

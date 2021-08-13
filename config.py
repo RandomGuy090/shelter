@@ -3,8 +3,9 @@ import variables as var
 
 login = os.getlogin()
 
-config_files = [f"/home/{login}/.config/shelter/config",
-				f"/home/{login}/.shelter"]
+var.CONFIG_FILES.append(f"/home/{login}/.config/shelter/config")
+var.CONFIG_FILES.append(f"/home/{login}/.shelter")
+
 
 config_template = f'''
 [DEFAULT]
@@ -22,7 +23,7 @@ class Config(object):
 	config = ""
 	def __init__(self, file=None):
 		if file == None:
-			for elem in config_files:
+			for elem in var.CONFIG_FILES:
 				try:
 					f = open(elem, 'r')
 					self.config = f.read()
@@ -31,10 +32,10 @@ class Config(object):
 			if self.config == "":
 				print("no config file, creating new")
 				print("create: ")
-				print(config_files[0])
+				print(var.CONFIG_FILES[0])
 				try:
-					os.makedirs(os.path.dirname(config_files[0]), exist_ok=True)
-					f = open(config_files[0], 'w+')
+					os.makedirs(os.path.dirname(var.CONFIG_FILES[0]), exist_ok=True)
+					f = open(var.CONFIG_FILES[0], 'w+')
 					f.write(config_template)
 				except:
 					print("error creating")

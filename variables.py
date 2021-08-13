@@ -18,6 +18,7 @@ SSHPORT = 22
 SSHADDR = ""
 SSHUSER = ""
 runSSH = None
+CONFIG_FILES = []
 
 IMPORT_FILE = ""
 
