@@ -114,7 +114,7 @@ class Gpg_handler(object):
 		except:
 			return "_file error"
 
-		res = self.gpg.import_keys(key, passphrase="_asdwer4852")
+		res = self.gpg.import_keys(key)
 
 		if res.count == 0 :
 			return "import key error"
