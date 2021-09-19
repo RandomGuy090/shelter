@@ -20,6 +20,7 @@ class import_csv():
 			self.txt = f.read()
 			self.txt = self.txt.replace('"', "")
 			self.txt = self.txt.replace('https://', "")
+			self.txt = self.txt.replace('www.', "")
 
 		return self.txt
 

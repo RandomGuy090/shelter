@@ -175,6 +175,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 	   -s --secret		import secret key
 	   -p --public		import public key
 	   -P --port 		ssh server port
+	   -i --import		import from csv file
 
 	   e.g.
 	   with ssh server
