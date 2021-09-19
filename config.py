@@ -66,18 +66,20 @@ class Config(object):
 
 
 		if var.runSSH:
-			impor = {"var.SSHUSER": var.SSHUSER,
-					"var.FILE": var.FILE,
+			impor = {"var.FILE": var.FILE,
 					"var.SSHPORT": var.SSHPORT,
 					}
 			for elem in impor:
 				if impor[elem] == "":
+					print("asdf")
 					print(f"{config_defaults[elem]} is empty, check config file")
 					sys.exit(0)
+							
+			if var.FILE.startswith(f"{var.SSHUSER}@"):
+				var.FILE = f"{var.SSHADDR}:{var.FILE}"
+			else:
+				var.FILE = f"{var.SSHUSER}@{var.SSHADDR}:{var.FILE}"
 
-
-			var.FILE = f"{var.SSHUSER}@{var.SSHADDR}:{var.FILE}"
-			
 
 
 

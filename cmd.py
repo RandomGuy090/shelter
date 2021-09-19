@@ -96,16 +96,32 @@ class Cmd(Shelter, Switch, Generator, File_source):
 
 
 	def process_file_name(self):
-		print(var.FILE)
+
 		if var.FILE.startswith("http"):
 			"if http address is given in the -f flag"
-			var.CONTENT = self.get_http()
 
-		elif "@" in var.FILE:
+			var.FILE = var.FILE.lower()
+			var.FILE = var.FILE.replace("http","")
+			var.FILE = var.FILE.replace(" ","")
+
+			var.CONTENT = self.get_http(var.FILE)
+
+		elif "@" in var.FILE or var.FILE.startswith("tcp"):
 			"if ssh address is given in the -f flag"
+			print("tcp")
+
+			var.FILE = var.FILE.replace("tcp","")
+			var.FILE = var.FILE.replace(" ","")
+
+			print(var.FILE)
+			
 			var.SSHUSER, adr = var.FILE.split("@") 
 			var.SSHADDR, var.SSHPATH = adr.split(":")
+			
+
 			var.CONTENT = self.get_ssh()
+
+
 
 		else:
 			var.CONTENT = self.read_file()
@@ -114,8 +130,8 @@ class Cmd(Shelter, Switch, Generator, File_source):
 	def flags(self):
 		try:
 			argv = sys.argv[1:]
-			options, reminder = getopt.getopt(argv,"f:r:h:s:p:_p:c:i:",["file=","recip=", "help=", \
-								"public=", "secret=","port", "config", "import"])
+			options, reminder = getopt.getopt(argv,"f:r:h:s:p:P:c:i:",["file=","recip=", "help=", \
+								"public=", "secret=","port=", "config", "import="])
 
 			for opt, arg in options:
 				if opt in ('-f', '--file'):
@@ -127,7 +143,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 					var.PRIV_KEY = arg
 				elif opt in ("-p", "--public"):
 					var.PUBLIC_KEY = arg
-				elif opt in ("-_p", "--port"):
+				elif opt in ("-P", "--port"):
 					var.SSHPORT = arg
 				elif opt in ("-c", "--config"):
 					print(f"config file {arg}")
@@ -158,7 +174,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 	   -r --recipient	recipient       
 	   -s --secret		import secret key
 	   -p --public		import public key
-	   -_p --port 		ssh server port
+	   -P --port 		ssh server port
 
 	   e.g.
 	   with ssh server
