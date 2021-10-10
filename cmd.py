@@ -110,15 +110,12 @@ class Cmd(Shelter, Switch, Generator, File_source):
 			"if ssh address is given in the -f flag"
 			print("tcp")
 
-			var.FILE = var.FILE.replace("tcp","")
+			var.FILE = var.FILE.replace("tcp ","")
 			var.FILE = var.FILE.replace(" ","")
-
-			print(var.FILE)
 			
 			var.SSHUSER, adr = var.FILE.split("@") 
 			var.SSHADDR, var.SSHPATH = adr.split(":")
 			
-
 			var.CONTENT = self.get_ssh()
 
 
