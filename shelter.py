@@ -64,7 +64,7 @@ class Shelter(csv):
 			self.failure_exit("file not decrypted")
 		tmp = self.parse_json(tmp)
 
-		var.FIRST_READ = copy.copy(tmp)		#compare later if user made any changes
+		var.FIRST_READ = copy.deepcopy(tmp)		#compare later if user made any changes
 		var.PATHDIR = tmp
 	
 	def encrypt(self, content)->str:		#prepare and call gpg handler to decrypt

@@ -33,6 +33,7 @@ class Cmd(Shelter, Switch, Generator, File_source):
 		except:
 			print(f"_file -- {var.FILE} -- has no content, \nclosing....")
 			return
+
 		if not var.LAST_READ == var.FIRST_READ or var.IMPORT_FILE:
 			if var.FILE == "":
 				var.FILE = input(self.prompt_color("insert file name >: "))
