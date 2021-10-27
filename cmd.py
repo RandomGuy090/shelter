@@ -192,6 +192,24 @@ class Cmd(Shelter, Switch, Generator, File_source):
 	   
 	   ./run.py -f <path> -r <email>
 
+	   in shell
+
+		change dir		cd {sheltername}, {sheltername}
+		go upper dir		cd ..
+		go main dir		cd
+		create new dir		create, mkdir, cr, make, new
+	   	create new password	add {name} {password},
+   					touch {name} {password}
+		delete dir/password	del {name}
+					delete {name}
+					rm {name}
+					remove {name}
+
+		generate password 	gen {name} {lenght (default 8)}
+		help			help
+	  	list in dir		ls, list
+	   	exit			exit, quit, q
+
 		""")
 
 
