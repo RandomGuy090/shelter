@@ -11,24 +11,47 @@ sudo chmod +x run.py
 ## help
 ```
 ./shelter.py <options>
-       -f --file        file location
-       -r --recipient   recipient       
-       -s --secret      import secret key
-       -p --public      import public key
-       -P --port        ssh server port
+          -f --file         file location
+          -r --recipient    recipient       
+          -s --secret              import secret key
+          -p --public              import public key
+          -P --port         ssh server port
+          -i --import              import from csv file
 
-       e.g.
-       with ssh server
-       ./run.py -f <user>@<ip>:<path/to/file> -P <port> 
-       with http server
-       ./run.py -f <http://path/to/file> 
+          e.g.
+          with ssh server
+          ./run.py -f <user>@<ip>:<path/to/file> -_p <port> 
+          or 
+          ./run.py ssh
+          if important variables are defined in config file 
 
-       import keys
-       ./run.py -f <path> -p <path/to/pubkey> -s <path/to/prv/key>
-    
-        change recipient (after commited changes)
+          with http server
+          ./run.py -f <http://path/to/file> 
+
+          import keys
+          ./run.py -f <path> -p <path/to/pubkey> -s <path/to/prv/key>
        
-       ./run.py -f <path> -r <email>
+              change recipient (after commited changes)
+          
+          ./run.py -f <path> -r <email>
+
+          in shell
+
+              change dir           cd {sheltername}, {sheltername}
+              go upper dir         cd ..
+              go main dir          cd
+              create new dir              create, mkdir, cr, make, new
+              create new password  add {name} {password},
+                                   touch {name} {password}
+              delete dir/password  del {name}
+                                   delete {name}
+                                   rm {name}
+                                   remove {name}
+
+              generate password    gen {name} {lenght (default 8)}
+              help                 help
+              list in dir          ls, list
+              exit                 exit, quit, q
 ```
 ## symmetric encryption
 ```
