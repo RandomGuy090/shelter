@@ -94,7 +94,6 @@ class Switch(object):
 	
 	def case_exit(self):
 		"eg q"
-		print(f"var.CHANGED {var.CHANGED}")
 		if not var.LAST_READ == var.FIRST_READ or var.IMPORT_FILE:
 			sys.exit(2)
 
