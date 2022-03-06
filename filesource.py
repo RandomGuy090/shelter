@@ -1,5 +1,5 @@
 import requests
-import os, time
+import os, time, sys
 from paramiko import SSHClient, AutoAddPolicy
 
 
@@ -33,7 +33,13 @@ class File_source(object):
 		print(var.SSHADDR)
 		print(var.SSHUSER)
 		print(var.SSHPORT)
-		client.connect(var.SSHADDR, username=var.SSHUSER, port=var.SSHPORT)
+		try:
+			client.connect(var.SSHADDR, username=var.SSHUSER, port=var.SSHPORT)
+		except:
+			# raise Exception("xD")
+			sys.exit(-1)
+			# print("could not connect")
+
 		stdin, stdout, stderr = client.exec_command(command)
 		str = ""
 		for line in stdout:
