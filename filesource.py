@@ -34,7 +34,7 @@ class File_source(object):
 		print(var.SSHUSER)
 		print(var.SSHPORT)
 		try:
-			client.connect(var.SSHADDR, username=var.SSHUSER, port=var.SSHPORT)
+			client.connect(var.SSHADDR, username=var.SSHUSER, port=var.SSHPORT, timeout=var.TIMEOUT)
 		except:
 			# raise Exception("xD")
 			sys.exit(-1)

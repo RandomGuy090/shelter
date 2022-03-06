@@ -19,7 +19,7 @@ SSHADDR = ""
 SSHUSER = ""
 runSSH = None
 CONFIG_FILES = []
-
+TIMEOUT = 10
 IMPORT_FILE = ""
 
 #commands
