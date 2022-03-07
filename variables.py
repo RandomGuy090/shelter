@@ -30,7 +30,9 @@ CD_UP_KWORDS = ["cd .."]
 NEW_SHELTER_KWORDS = ["create", "mkdir", "cr","make", "new"]
 NEW_FILES_KWORDS = ["add", "touch"]
 DEL_KWORDS = ["del", "rm", "remove", "delete"]
-GEN_WORDS = ["gen"," generate"]
+GEN_WORDS = ["gen","generate"]
+MOVE_WORDS = ["mv","move"]
+COPY_WORDS = ["cp","copy"]
 
 #sum
 COMMANDS = EXT_KWORDS + LS_KWORDS + CD_KWORDS + CD_UP_KWORDS \
