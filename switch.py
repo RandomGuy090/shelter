@@ -78,6 +78,13 @@ class Switch(object):
 		elif comm in var.GEN_WORDS:		#eg generate _xx
 			return getattr(self, "case_generate")(arg)
 
+		elif comm in var.MOVE_WORDS:		#eg mv _xx
+			return getattr(self, "case_move")(arg)
+
+		elif comm in var.COPY_WORDS:		#eg mv _xx
+			return getattr(self, "case_copy")(arg)
+
+
 		#--- adding new cases here
 		else:
 			return getattr(self, "caseNone")(comm)
@@ -222,9 +229,38 @@ class Switch(object):
 				pass
 			passwd = self.generate(leng)
 			self.case_create_file((arg[i], passwd), command="gen")
-	
-	
 
 
-	
+	def case_move(self, arg:list):
+		self.case_copy(arg)
+		for elem in arg[0:-1]:
+			self.case_delete([elem])
 
+	
+	def case_copy(self, arg:list):
+		dest = arg[-1]
+		destVal = var.PATHDIR.get(dest)
+		arg = arg[0:-1]
+
+		if dest == "..":
+			# print(f"xD  {var.CONTENT}")
+			# self.case_cd_up()
+
+			for elem in arg:
+				elemVal = var.PATHDIR.get(elem)
+				index =  var.PATH.rfind("']['")
+				tmp_dict = {elem: elemVal}
+				if index > 0:
+					tmp = var.PATH[0:index] + "']"
+										
+					exec(f"self.data{tmp}.update({tmp_dict})")
+					return None
+				else:
+					exec(f"self.data.update({tmp_dict})")
+					return None
+
+
+
+		for elem in arg:
+			elemVal = var.PATHDIR.get(elem)
+			var.PATHDIR[dest][elem] = elemVal
