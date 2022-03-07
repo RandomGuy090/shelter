@@ -204,6 +204,11 @@ class Cmd(Shelter, Switch, Generator, File_source):
 					delete {name}
 					rm {name}
 					remove {name}
+		move dir/passwd 	mv {file} {dest}
+						 	move {file} {dest}
+		copy dir/passwd 	cp {file} {dest}
+						 	copy {file} {dest}
+
 
 		generate password 	gen {name} {lenght (default 8)}
 		help			help
