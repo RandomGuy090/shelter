@@ -1,8 +1,10 @@
 import configparser, os, sys
 import variables as var
 
-login = os.getlogin()
+# login = os.getlogin()
 
+login = os.popen("whoami").read()
+login = login.replace("\n", "")
 var.CONFIG_FILES.append(f"/home/{login}/.config/shelter/config")
 var.CONFIG_FILES.append(f"/home/{login}/.shelter")
 

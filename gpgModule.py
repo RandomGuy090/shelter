@@ -1,20 +1,29 @@
-import gnupg, os
+import gnupg, os, sys
 import variables as var
 
 class Gpg_handler(object):
 
 	def __init__(self, gpghome=None):
 		if gpghome == None:
-			self.gpghome = f"{os.environ['HOME']}.gnupg/"
+			self.gpghome = f"{os.environ['HOME']}/.gnupg"
+			os.popen(f"echo 'max-cache-ttl:0:0' | GNUPGHOME='"+ '${GNUPGHOME:-' + self.gpghome + '}' +"' gpgconf --change-options gpg-agent")
+			print(self.gpghome)
 
 		try:
-			self.gpg = gnupg.GPG(gnupghome=gpghome)
-		except:
+			self.gpg = gnupg.GPG(gnupghome=self.gpghome)
+			# self.gpg = gnupg.GPG(homedir=self.gpghome, gpg="/bin/gpg")
+		except Exception as e:
+			print(e)
 			print("GPG homedir error")
+			sys.exit(-1)
 
 
 	def decrypt(self, file):
-		data = self.gpg.decrypt(file)
+		try:
+			data = self.gpg.decrypt(file)
+		except:
+			print("xDD")
+
 		
 		if not data.ok:
 			return False
